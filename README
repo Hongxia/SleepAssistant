@@ -7,3 +7,12 @@ Hongxia Zhong
 Arpan Shah
 Tian Zhao
 Shaurya Saluja
+
+================================
+PostgresSQL Setup:
+> createdb sleepdb
+> createuser sleepdev -P
+> password: sleepkey
+
+> psql sleepdb (to enter psql console)
+> (from console) ALTER USER sleepdev SUPERUSER;
