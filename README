@@ -25,8 +25,21 @@ to start console type "mysql"
 
 Open mysql console and RUN:
 --------------------
+CREATE DATABASE sleepdb
+
 CREATE USER 'sleepdev'@'localhost' IDENTIFIED BY 'sleepdev';
 
 GRANT ALL PRIVILEGES ON * . * TO 'sleepdev'@'localhost';
 
 FLUSH PRIVILEGES;
+
+=========================
+To check if its working RUN:
+
+python manage.py syncdb
+
+-- Follow all instructions there to create user
+
+python manage.py runserver 8080 to start the console
+
+
