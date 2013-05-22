@@ -13,15 +13,22 @@ MySQL Setup:
 
 If you don't have MySQL get it first:
 
+ON LINUX:
 sudo apt-get install mysql-server
 sudo apt-get install python-mysqldb
+
+ON MAC (if you have homebrew, if you don't get it then:)
+brew install mysql
+-follow additional steps if necessary based on output of brewinstall or (find hongxia or arpan)
 
 =====================
 Type "which mysql" to make sure its installed
 
 to start console type "mysql"
 
+to start mysql server before you can type mysql type:
 
+mysql.server start
 
 Open mysql console and RUN:
 --------------------
