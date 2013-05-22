@@ -17,14 +17,16 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'sleepdb',                      # Or path to database file if using sqlite3.
-        'USER': 'sleepdev',
-        'PASSWORD': 'sleepkey',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'sleepdb',             # Or path to database file if using sqlite3.
+        'USER': 'sleepdev',             # Not used with sqlite3.
+        'PASSWORD': 'sleepdev',         # Not used with sqlite3.
+        'DATABASE_HOST': '',             # Set to empty string for localhost. Not used with sqlite3.
+        'DATABASE_PORT': '' 
     }
 }
+
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts

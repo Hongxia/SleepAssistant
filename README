@@ -9,10 +9,24 @@ Tian Zhao
 Shaurya Saluja
 
 ================================
-PostgresSQL Setup:
-> createdb sleepdb
-> createuser sleepdev -P
-> password: sleepkey
+MySQL Setup:
 
-> psql sleepdb (to enter psql console)
-> (from console) ALTER USER sleepdev SUPERUSER;
+If you don't have MySQL get it first:
+
+sudo apt-get install mysql-server
+sudo apt-get install python-mysqldb
+
+=====================
+Type "which mysql" to make sure its installed
+
+to start console type "mysql"
+
+
+
+Open mysql console and RUN:
+--------------------
+CREATE USER 'sleepdev'@'localhost' IDENTIFIED BY 'sleepdev';
+
+GRANT ALL PRIVILEGES ON * . * TO 'sleepdev'@'localhost';
+
+FLUSH PRIVILEGES;
