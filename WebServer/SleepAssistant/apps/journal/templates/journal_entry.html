@@ -1,0 +1,90 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Journal Entry
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+         <div style="padding-left:3px;"><h4>Journal Entry</h4></div>
+
+        <fieldset>
+            <!-- Controls -->
+            <div class="small-12 columns text-center">
+                <h5 class="subheader">Your Sleep Journal Entry</h5>
+            </div>
+            <div class="small-12 columns text-center">
+                <ul class="button-group round even-3">
+                    <!-- TODO: next_id / prev_id == None or 0 -->
+                    {% if prev_date == None %}
+                        <li><a href="#" class="disabled button alert">&lt;</a></li>    
+                    {% else %}
+                        <li><a href="{% url 'journal_entry' prev_date.year prev_date.month prev_date.day %}" class="button alert">&lt;</a></li>
+                    {% endif %}
+                    <li><h4 class="text-center">{{ date }}</h4></li>
+                    {% if next_date == None %}
+                        <li><a href="#" class="disabled button alert">&gt;</a></li>
+                    {% else %}
+                        <li><a href="{% url 'journal_entry' next_date.year next_date.month next_date.day %}" class="button alert">&gt;</a></li>
+                    {% endif %}
+                    
+                </ul>
+            </div>
+
+            {% if record == None %}
+                <!-- Record does not exist -->
+                <div class="small-12 columns text-center">
+                    <h5 class="subheader">Sorry, the record on {{ date }} cannot be found.</h5>
+                    <a href="{% url 'update_journal_entry' date.year date.month date.day %}" class="button medium success radius">Create</a>
+                </div>
+            {% else %}
+                <!-- Table -->
+                <table align="center">
+                    <tbody>
+                        <tr>
+                            <td>Time in Bed:</td>
+                            <td>{{ record.in_bed }}</td>
+                        </tr>
+                        <tr>
+                            <td>Fell Asleep At:</td>
+                            <td>{{ record.fall_asleep }}</td>
+                        </tr>
+                        <tr>
+                            <td>Awake At:</td>
+                            <td>{{ record.wake_up }}</td>
+                        </tr>
+                        <tr>
+                            <td>Time out of Bed:</td>
+                            <td>{{ record.out_bed }}</td>
+                        </tr>
+                        <tr>
+                            <td>Awake through Night:</td>
+                            <td>{{ record.awake_hours|floatformat:-2 }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Time Awake in Bed:</td>
+                            <td>{{ record.time_awake_in_bed|floatformat:-2 }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Time asleep at Night:</td>
+                            <td>{{ record.time_asleep_at_night|floatformat:-2 }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Time Spent Napping:</td>
+                            <td>{{ record.napping_hours|floatformat:-2 }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Total Asleep Time:</td>
+                            <td>{{ record.total_time_asleep|floatformat:-2 }} hours</td>
+                        </tr>
+                        <tr>
+                            <td>Morning Grogginess:</td>
+                            <td>{{ record.grogginess }} minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center"><a href="{% url 'update_journal_entry' date.year date.month date.day %}" class="button medium success radius">Edit Entry</a></div>
+            {% endif %}
+        </fieldset>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Update Journal Entry
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form id='update_journal_entry_form' method='POST' action="{% url 'update_journal_entry' date.year date.month date.day %}" class="custom">
+			{% csrf_token %}
+			{{ form.as_p }}
+
+			<div class="small-12 columns">
+				{% if record == None %}
+					<button type="submit" class="button">Create</button>
+				{% else %}
+					<button type="submit" class="button">Update</button>
+				{% endif %}
+			</div>
+		</form>
+	</div>
+{% endblock %}

@@ -10,7 +10,8 @@ urlpatterns = patterns('',
     url(r'^getup/$', 'SleepAssistant.apps.journal.views.getup', name='getup'),
     url(r'^getup_questions/$', 'SleepAssistant.apps.journal.views.getup_questions', name='getup_questions'),
     url(r'^summary/$', 'SleepAssistant.apps.journal.views.summary', name='summary'),
-    url(r'^data/(?P<record_id>\d+)/$', 'SleepAssistant.apps.journal.views.data', name='data'),
+    url(r'^journal/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', 'SleepAssistant.apps.journal.views.journal_entry', name='journal_entry'),
+    url(r'^journal/update/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', 'SleepAssistant.apps.journal.views.update_journal_entry', name='update_journal_entry'),
 
     # django-user-accounts
 	url(r'^account/login/$', SleepAssistant.apps.journal.views.LoginView.as_view(), name='account_login'),

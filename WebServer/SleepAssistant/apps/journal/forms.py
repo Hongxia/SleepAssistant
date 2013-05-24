@@ -1,5 +1,6 @@
 # django imports
 from django import forms
+from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
 
 # django-user-accounts
@@ -48,3 +49,35 @@ class GetupQuestionsForm(forms.Form):
 		self.fields['minutes_to_sleep'].widget.attrs = { 'placeholder':'in minutes' }
 		self.fields['minutes_to_getup'].widget.attrs = { 'placeholder':'in minutes' }
 		self.fields['hours_awake_in_sleep'].widget.attrs = { 'placeholder':'in hours, x.xx'}
+
+class JournalEntryForm(ModelForm):
+	in_bed_yesterday = forms.BooleanField()
+	fall_asleep_yesterday = forms.BooleanField()
+	in_bed = forms.TimeField(required=False)
+	fall_asleep = forms.TimeField(required=False)
+	wake_up = forms.TimeField(required=False)
+	out_bed = forms.TimeField(required=False)
+
+	class Meta:
+		model = SleepRecord
+		fields = ('awake_hours', 'napping_hours', 'grogginess')
+		widgets = {
+			'in_bed_yesterday': forms.RadioSelect,
+			'fall_asleep_yesterday' : forms.RadioSelect,
+			'in_bed': forms.TimeInput(format='%H:%M'),
+			'fall_asleep': forms.TimeInput(format='%H:%M'),
+			'wake_up': forms.TimeInput(format='%H:%M'),
+			'out_bed': forms.TimeInput(format='%H:%M'),
+		}
+
+	def __init__(self, *args, **kwargs):
+		super(JournalEntryForm, self).__init__(*args, **kwargs)
+		self.fields['in_bed'].widget.attrs={'placeholder': 'hh:mm'}	
+		self.fields['fall_asleep'].widget.attrs={'placeholder': 'hh:mm'}	
+		self.fields['wake_up'].widget.attrs={'placeholder': 'hh:mm'}	
+		self.fields['out_bed'].widget.attrs={'placeholder': 'hh:mm'}
+		self.fields['awake_hours'].widget.attrs={'placeholder': 'In hours'}
+		self.fields['napping_hours'].widget.attrs={'placeholder': 'In hours'}
+		self.fields['grogginess'].widget.attrs={'placeholder': 'In Minutes'}
+		self.fields['in_bed_yesterday'].widget.choices = ((False, 'False'), (True, 'True'))
+		self.fields['fall_asleep_yesterday'].widget.choices = ((False, 'False'), (True, 'True'))

@@ -1,6 +1,6 @@
 # django imports
 from django.template import RequestContext, Context, loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, render_to_response
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, resolve
@@ -14,7 +14,9 @@ from SleepAssistant.apps.journal.models import *
 # import forms
 from SleepAssistant.apps.journal.forms import *
 
+# python imports
 import sys
+from datetime import date, timedelta
 
 class SignupView(account.views.SignupView):
 	form_class = SignupForm
@@ -102,10 +104,193 @@ def getup_questions(request):
 		'form' : form,
 	})
 
-@login_required
-def summary(request):
-	return render(request , 'summary.html')
+def get_sleep_debt(records):
+	debt = 0
+	count = 0
+	for record in records[0:len(records)-1]:
+		count += 1
+		debt += (8 - record.total_time_asleep)
+
+	if count == 0:
+		return '-'
+
+	return debt
+
+def get_average_sleep_hours(records):
+	total = 0
+	count = 0
+	for record in records[0:len(records)-1]:
+		count += 1
+		total += record.total_time_asleep
+
+	if count > 0:
+		return decimal.Decimal(total)/count 
+	else: 
+		return '-'
+
+def get_average_grogginess(records):
+	total = 0
+	count = 0
+	for record in records[0:len(records)-1]:
+		count += 1
+		total += record.grogginess
+
+	if count > 0:
+		return decimal.Decimal(total)/count 
+	else: 
+		return '-'
+
+def get_average_overall_feeling(records):
+	total = 0
+	count = 0
+	for record in records[0:len(records)-1]:
+		count += 1
+		total += record.overall
+
+	if count > 0:
+		return decimal.Decimal(total)/count 
+	else: 
+		return '-'
 
 @login_required
-def data(request, record_id):
-	return render(request, 'data.html')
+def summary(request):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	all_records = SleepRecord.objects.all_records(user)
+
+	return render(request, 'summary.html', {
+		'record_count' : len(all_records) - 1,
+		'sleep_debt' : get_sleep_debt(all_records),
+		'average_sleep_hours' : get_average_sleep_hours(all_records),
+		'average_grog' : get_average_grogginess(all_records),
+		'average_overall' : get_average_overall_feeling(all_records), 				
+	})
+
+
+@login_required
+def journal_entry(request, year, month, day):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	try:
+		current_date = date(int(year), int(month), int(day))
+	except ValueError:
+		return HttpResponseNotFound('<h1>Date not valid.</h1>')
+	
+	''' verifies that record exists '''
+	record = SleepRecord.objects.daily_record(user, current_date)
+
+	''' find next_date '''
+	next_date = current_date + timedelta(days=1)
+	if next_date > datetime.today().date():
+		next_date = None
+
+	''' find prev_date '''
+	prev_date = current_date - timedelta(days=1)
+
+	# next_date is None if current record is today's record
+	return render(request, 'journal_entry.html', {
+		'date' : current_date,
+		'record' : record,
+		'next_date' : next_date,
+		'prev_date' : prev_date,
+	})
+
+@login_required
+def journal_entry_old(request, record_id):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	
+	''' verifies that record exists '''
+	record = SleepRecord.objects.get_record(record_id)
+	if record is None:
+		return HttpResponseNotFound('<h1>Sleep Record not found</h1>')
+
+	''' verifies that record belongs to this user '''
+	if record.user != request.user:
+		return HttpResponseNotFound('<h1>Access denied</h1>')
+
+	''' find next_id '''
+	next_record = record.get_next_record()
+	if next_record is None:
+		if record.is_last_record:
+			next_id = None
+		else:
+			next_id = 0
+	else:
+		next_id = next_record.id
+
+	''' find prev_id '''
+	prev_record = record.get_prev_record()
+	if prev_record is None:
+		prev_id = 0
+	else:
+		prev_id = prev_record.id
+
+
+
+	# next_id is None if current record is today's record
+	# next_id / prev_id is 0 if it does not exist yet
+	return render(request, 'journal_entry.html', {
+		'record' : record,
+		'next_id' : next_id,
+		'prev_id' : prev_id,
+	})
+
+@login_required
+def update_journal_entry(request, year, month, day):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	try:
+		current_date = date(int(year), int(month), int(day))
+	except ValueError:
+		return HttpResponseNotFound('<h1>Date not valid.</h1>')
+	
+	if request.method == 'POST':
+		form = JournalEntryForm(request.POST)
+		if form.is_valid():
+			record = form.save(commit=False)
+			
+			in_bed_time = form.cleaned_data['in_bed']
+			fall_asleep_time = form.cleaned_data['fall_asleep']
+			wake_up_time = form.cleaned_data['wake_up']
+			out_bed_time = form.cleaned_data['out_bed']
+			if form.cleaned_data['in_bed_yesterday']:
+				yesterday = current_date - timedelta(days=1)
+				record.in_bed = datetime.combine(yesterday, in_bed_time)
+			else:
+				record.in_bed = datetime.combine(current_date, in_bed_time)
+
+			if form.cleaned_data['fall_asleep_yesterday']:
+				yesterday = current_date - timedelta(days=1)
+				record.fall_asleep = datetime.combine(yesterday, fall_asleep_time)
+			else:
+				record.fall_asleep = datetime.combine(current_date, fall_asleep_time)
+
+			record.wake_up = datetime.combine(current_date, wake_up_time)
+			record.out_bed = datetime.combine(current_date, out_bed_time)
+
+			record.user = user
+			record.date = date(int(year), int(month), int(day))
+			record.save()
+
+			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
+	else:
+		record = SleepRecord.objects.daily_record(user, current_date)
+		if record is None: 
+			form = JournalEntryForm()
+		else:
+			form = JournalEntryForm(instance=record, initial={ 
+				'in_bed_time' : record.in_bed.time(),
+				'fall_asleep_time' : record.fall_asleep.time(),
+				'wake_up_time' : record.wake_up.time(),
+				'out_bed_time' : record.out_bed.time(),
+				'in_bed_yesterday' : record.in_bed.date() != current_date,
+				'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
+			})
+
+	# next_date is None if current record is today's record
+	return render(request, 'update_journal_entry.html', {
+		'form' : form,
+		'date' : current_date,
+		'record' : record,
+	})

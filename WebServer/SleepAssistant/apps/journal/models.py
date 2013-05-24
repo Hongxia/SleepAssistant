@@ -27,14 +27,9 @@ class UserProfile(models.Model):
 		record = SleepRecord.objects.daily_record(self.user, today)
 		if record is None:
 			record = SleepRecord(user=self.user, date=today)
+			record.save()
 
 		return record
-
-	def get_yesterday_record(self):
-		return SleepRecord.objects.daily_record(self.user, datetime.today().date() - datetime.timedelta(days=1))
-
-	def get_tomorrow_record(self):
-		return SleepRecord.objects.daily_record(self.user, datetime.today().date() + datetime.timedelta(days=1))
 
 	def get_age(self):
 		return int((datetime.utcnow().replace(tzinfo=utc) - self.birthday).days / 365.2425)
@@ -71,13 +66,20 @@ class SleepRecordManager(models.Manager):
 
 	def weekly_records(self, user, date):
 		weekday = date.weekday()
-		monday = date - datetime.timedelta(days=weekday-1)
-		sunday = monday + datetime.timedelta(days=7)
+		monday = date - timedelta(days=weekday-1)
+		sunday = monday + timedelta(days=7)
 		return self.filter(user=user, date__gte=monday, date__lte=sunday)
 
 	def daily_record(self, user, date):
 		try:
 			record = self.get(user=user, date=date)
+			return record
+		except SleepRecord.DoesNotExist:
+			return None
+
+	def get_record(self, id):
+		try:
+			record = self.get(pk=id)
 			return record
 		except SleepRecord.DoesNotExist:
 			return None
@@ -95,7 +97,7 @@ class SleepRecord(models.Model):
 	out_bed = models.DateTimeField(blank=True, null=True)
 	awake_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 	napping_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
-	grogginess = models.IntegerField(default=0)
+	grogginess = models.IntegerField(blank=True, null=True)
 
 	# alertness
 	ALERTNESS = (
@@ -127,6 +129,7 @@ class SleepRecord(models.Model):
 
 	class Meta:
 		ordering = ['user', 'date']
+		unique_together = ('user', 'date')
 
 	def __unicode__(self):
 		return 'Sleep Record of %s on %s' % (self.user.get_full_name(), self.get_weekday())
@@ -139,6 +142,21 @@ class SleepRecord(models.Model):
 	def get_dreams_count(self):
 		return len(self.dream_records)
 
+	def is_last_record(self):
+		return self.date == datetime.today().date()
+
+	''' navigation methods '''
+	def get_next_record(self):
+		next = self.date + timedelta(days=1)
+		record = SleepRecord.objects.daily_record(self.user, next)
+		return record
+
+	def get_prev_record(self):
+		previous = self.date + timedelta(days=1)
+		record = SleepRecord.objects.daily_record(self.user, previous)
+		return record
+
+	''' these are functions that updates the record '''
 	def add_nap_time(self, timedelta):
 		napped_hours = decimal.Decimal(timedelta.seconds)/3600
 		self.napping_hours += napped_hours
@@ -154,6 +172,18 @@ class SleepRecord(models.Model):
 		self.wake_up = self.out_bed - timedelta(minutes=minutes_to_getup)
 		self.awake_hours = hours_awake_in_sleep
 		self.save()
+
+	''' these are the calculated fields in the journal '''
+	def time_awake_in_bed(self):
+		seconds_awake = ((self.fall_asleep - self.in_bed) + (self.out_bed - self.wake_up)).seconds
+		return decimal.Decimal(seconds_awake)/3600
+
+	def time_asleep_at_night(self):
+		seconds_asleep = (self.wake_up - self.fall_asleep).seconds
+		return decimal.Decimal(seconds_asleep)/3600
+
+	def total_time_asleep(self):
+		return self.napping_hours + self.time_asleep_at_night()
 
 class DreamRecordManager(models.Manager):
 	def all_dreams(self, user):
