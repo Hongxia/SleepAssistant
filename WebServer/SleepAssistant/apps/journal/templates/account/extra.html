@@ -1,0 +1,92 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Sign up
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="small-12 columns">
+			<h4>Sign up</h4>
+		</div>
+
+        <form id="signup_form" method="post" action="{% url 'account_signup' %}" class="custom">
+            {% csrf_token %}
+			{% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <fieldset>
+            	<div class="small-12 columns">
+            		{{ form.email.errors }}
+            		<label for="id_email"><h5 class="subheader">E-mail:</h5></label>
+					{{ form.email }}
+            	</div>
+            	<div class="small-12 columns">
+            		{{ form.password.errors }}
+            		<label for="id_password"><h5 class="subheader">Password:</h5></label>
+					{{ form.password }}
+            	</div>
+            	<div class="small-12 columns">
+            		{{ form.password_confirm.errors }}
+            		<label for="id_password_confirm"><h5 class="subheader">Confirm Password:</h5></label>
+					{{ form.password_confirm }}
+            	</div>
+        		<div class="small-12 columns">
+            		{{ form.first_name.errors }}
+            		<label for="id_first_name"><h5 class="subheader">First Name:</h5></label>
+					{{ form.first_name }}
+            	</div>
+        		<div class="small-12 columns">
+            		{{ form.last_name.errors }}
+            		<label for="id_last_name"><h5 class="subheader">Last Name:</h5></label>
+					{{ form.last_name }}
+            	</div>
+            	<div class="small-12 columns">
+            		{{ form.last_name.birthday }}
+            		<label for="id_birthday"><h5 class="subheader">Birthday:</h5></label>
+                    {{ form.birthday }}
+            	</div>
+                
+
+              <!--  <div class="select"><span>
+                <select name="date_naissance_day" id="jour">
+                <option value="--">J</option>
+                {% for i in days %}
+                <option value="{{i}}" {% if form.date_naissance_day.value == i %}selected{% endif %}>{{i}}</option>
+                {% endfor %}
+                </select>
+                </span></div>
+                <div class="select"><span>
+                <select name="date_naissance_month" id="mois">
+                <option value="--">M</option>
+                {% for i in months %}
+                <option value="{{i}}" {% if form.date_naissance_month.value == i %}selected{% endif %}>{{i}}</option>
+                {% endfor %}
+                </select>
+                </span></div>
+                <div class="select last"><span>
+                <select name="date_naissance_year" id="annee">
+                <option value="--">A</option>
+                {% for i in years %}
+                <option value="{{i}}" {% if form.date_naissance_year.value == i %}selected{% endif %}>{{i}}</option>
+                {% endfor %}
+                </select>
+                </span></div>-->
+
+
+            	<!--Not really sure what does code field do...-->
+            	<div class="small-12 columns">{{ form.code }}</div>
+                <div class="small-12 columns text-right">
+                    <button type="submit" class="button">Signup</button>
+                </div>
+            </fieldset>
+        </form>
+	</div>
+{% endblock %}
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Sign up
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- <div style="display:inline-block;" class="small-12 columns"> -->
+         <div style="padding-left:3px;"><h4> Summary </h4></div>
+        <!-- </div> -->
+
+        <form id="signup_form" method="post" action="{% url 'account_signup' %}" class="custom">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <fieldset>
+                <div class="small-12 columns">
+                    <h5 style="text-align: center;" class="subheader">Your Current Sleep Debt</h5><h4 style="text-align: center;"> 3000</h4>
+                </div>
+
+                <div class="small-12 columns">
+                    <h5 style="text-align: center;" class="subheader">Your Average Sleep Hours</h5><h4 style="text-align: center;"> 7.5 hrs</h4>
+                </div>
+
+                <div class="small-12 columns">
+                    <h5 style="text-align: center;" class="subheader">Your Average Morning Grogginess</h5><h4 style="text-align: center;"> 3.14159 mins</h4>
+                </div>
+
+                
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
