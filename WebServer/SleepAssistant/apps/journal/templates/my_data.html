@@ -1,0 +1,78 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Sign up
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- <div style="display:inline-block;" class="small-12 columns"> -->
+         <div style="padding-left:3px;"><h4> My Data </h4></div>
+        <!-- </div> -->
+
+        <form id="signup_form" method="post" action="{% url 'account_signup' %}" class="custom">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            <fieldset>
+
+                <div class="small-12 columns">
+                    <h5 style="text-align: center;" class="subheader">Your Sleep Data</h5>
+                </div><div class="small-12 columns">
+                    <ul class="button-group round even-3">
+                      <li><a href="#" class="button alert"><</a></li>
+                      <li><h4 style="text-align:center;">Today</h4></li>
+                      <li><a href="#" class="button alert">></a></li>
+                    </ul>
+                </div>
+
+                <table align="center" >
+                    <tbody>
+                        <tr>
+                            <td>Time in Bed:</td>
+                            <td> 3:45 PM </td>
+                        </tr>
+                        <tr>
+                            <td>Fell Asleep At:</td>
+                            <td> 3:45 PM </td>
+                        </tr>
+                        <tr>
+                            <td>Awake At:</td>
+                            <td> 3:45 PM </td>
+                        </tr>
+                        <tr>
+                            <td>Time out of Bed:</td>
+                            <td> 3:45 PM </td>
+                        </tr>
+                        <tr>
+                            <td>Awake through Night:</td>
+                            <td> 0 Hrs </td>
+                        </tr>
+                        <tr>
+                            <td>Time Awake in Bed:</td>
+                            <td> 0.5 hrs </td>
+                        </tr>
+                        <tr>
+                            <td>Time asleep at Night:</td>
+                            <td> 3:45 PM </td>
+                        </tr>
+                        <tr>
+                            <td>Time Spent Napping:</td>
+                            <td> 3 hrs </td>
+                        </tr>
+                        <tr>
+                            <td>Total Sleep at Night</td>
+                            <td> 7 hrs </td>
+                        </tr>
+                        <tr>
+                            <td>Morning rogginess</td>
+                            <td> 10 mins </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="center"><a href="#" class="button medium success radius">Update Data</a></div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
