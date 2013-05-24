@@ -5,6 +5,15 @@ from django.contrib.auth.models import User
 # python imports
 from datetime import datetime, timedelta
 
+class UserProfile(models.Model):
+	first_name = models.CharField(max_length=50)
+	last_name = models.CharField(max_length=50)
+	birthday = models.DateField()
+	user = models.ForeignKey(User, unique=True)
+
+	def get_age(self):
+		return int((datetime.now() - self.birthday).days / 365.2425)
+
 class SleepRecordManager(models.Manager):
 	def all_records(self, user):
 		return self.filter(user=user)
