@@ -32,13 +32,10 @@ mysql.server start
 
 Open mysql console and RUN:
 --------------------
-CREATE DATABASE sleepdb
-
-CREATE USER 'sleepdev'@'localhost' IDENTIFIED BY 'sleepdev';
-
-GRANT ALL PRIVILEGES ON * . * TO 'sleepdev'@'localhost';
-
-FLUSH PRIVILEGES;
+> CREATE DATABASE sleepdb;
+> CREATE USER 'sleepdev'@'localhost' IDENTIFIED BY 'sleepdev';
+> GRANT ALL PRIVILEGES ON sleepdb.* TO 'sleepdev'@'localhost';
+> FLUSH PRIVILEGES;
 
 =========================
 To check if its working RUN:
