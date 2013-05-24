@@ -42,7 +42,20 @@
 		</div>
 
 		</nav>
-		<div style="margin-right:3px;" class="right"><a style="margin-bottom:2px;" href="#" class="small button round">Logout</a></div>
+		<div style="margin-right:3px;" class="right">
+			{% if user.is_authenticated %}
+				<form display="none" id="logout_form" method="post" action="{% url 'account_logout' %}" class="custom">
+					{% csrf_token %}
+				</form>
+				<a style="margin-bottom:2px;" class="small round button" onclick="$('#logout_form').submit();">
+					Logout
+				</a>
+			{% else %}
+				<a style="margin-bottom:2px;" href="{% url 'account_login' %}" class="small button round">
+					Login
+				</a>
+			{% endif %}
+		</div>
 	{% endblock %}
 	
 	<div class="container">
