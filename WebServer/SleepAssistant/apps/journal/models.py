@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 # python imports
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
+import sys, decimal
 
 class UserProfile(models.Model):
 	first_name = models.CharField(max_length=50)
@@ -20,21 +22,48 @@ class UserProfile(models.Model):
 	state = models.CharField(max_length=2, default='AW')
 	onset = models.DateTimeField(blank=True, null=True)
 
+	def get_create_today_record(self):
+		today = datetime.today().date()
+		record = SleepRecord.objects.daily_record(self.user, today)
+		if record is None:
+			record = SleepRecord(user=self.user, date=today)
+
+		return record
+
+	def get_yesterday_record(self):
+		return SleepRecord.objects.daily_record(self.user, datetime.today().date() - datetime.timedelta(days=1))
+
+	def get_tomorrow_record(self):
+		return SleepRecord.objects.daily_record(self.user, datetime.today().date() + datetime.timedelta(days=1))
+
 	def get_age(self):
-		return int((datetime.now() - self.birthday).days / 365.2425)
+		return int((datetime.utcnow().replace(tzinfo=utc) - self.birthday).days / 365.2425)
+
+	def is_nap(self):
+		return self.state == 'NA'
+
+	def is_sleep(self):
+		return self.state == 'SL'
 
 	def nap(self):
 		self.state = 'NA'
-		self.onset = datetime.now()
+		self.onset = datetime.utcnow().replace(tzinfo=utc)
+		self.save()
 
 	def sleep(self):
 		self.state = 'SL'
-		self.onset = datetime.now()
+		self.onset = datetime.utcnow().replace(tzinfo=utc)
+		self.save()
 
 	# returns a timedelta object
-	def wakeup(self):
+	def getup(self):
 		self.state = 'AW'
-		return (datetime.now() - self.onset)
+		getup = datetime.utcnow().replace(tzinfo=utc)
+		inbed = self.onset
+		time_slept = getup - inbed
+		self.onset = None
+		self.save()
+		return inbed, getup, time_slept
 
 class SleepRecordManager(models.Manager):
 	def all_records(self, user):
@@ -77,20 +106,20 @@ class SleepRecord(models.Model):
 		(5, 'Drowsy'),
 		(6, 'Asleep'),
 	)
-	zero_two = models.IntegerField(blank=True, choices=ALERTNESS)
-	two_four = models.IntegerField(blank=True, choices=ALERTNESS)
-	four_six = models.IntegerField(blank=True, choices=ALERTNESS)
-	six_eight = models.IntegerField(blank=True, choices=ALERTNESS)
-	eight_ten = models.IntegerField(blank=True, choices=ALERTNESS)
-	ten_twelve = models.IntegerField(blank=True, choices=ALERTNESS)
-	twelve_fourteen = models.IntegerField(blank=True, choices=ALERTNESS)
-	fourteen_sixteen = models.IntegerField(blank=True, choices=ALERTNESS)
-	sixteen_eighteen = models.IntegerField(blank=True, choices=ALERTNESS)
-	eighteen_twenty = models.IntegerField(blank=True, choices=ALERTNESS)
-	twenty_twenty_two = models.IntegerField(blank=True, choices=ALERTNESS)
-	twenty_two_zero = models.IntegerField(blank=True, choices=ALERTNESS)
+	zero_two = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	two_four = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	four_six = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	six_eight = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	eight_ten = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	ten_twelve = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	twelve_fourteen = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	fourteen_sixteen = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	sixteen_eighteen = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	eighteen_twenty = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	twenty_twenty_two = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
+	twenty_two_zero = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
 	optimal_time = models.DateTimeField(blank=True, null=True)
-	overall = models.IntegerField(blank=True)
+	overall = models.IntegerField(blank=True, null=True)
 
 	# sleep altering factors
 	inducing_factor = models.TextField(blank=True)
@@ -110,6 +139,22 @@ class SleepRecord(models.Model):
 	def get_dreams_count(self):
 		return len(self.dream_records)
 
+	def add_nap_time(self, timedelta):
+		napped_hours = decimal.Decimal(timedelta.seconds)/3600
+		self.napping_hours += napped_hours
+		self.save()
+
+	def record_sleep(self, inbed, outbed):
+		self.in_bed = inbed
+		self.out_bed = outbed
+		self.save()
+
+	def add_sleep_details(self, minutes_to_sleep, minutes_to_getup, hours_awake_in_sleep):
+		self.fall_asleep = self.in_bed + timedelta(minutes=minutes_to_sleep)
+		self.wake_up = self.out_bed - timedelta(minutes=minutes_to_getup)
+		self.awake_hours = hours_awake_in_sleep
+		self.save()
+
 class DreamRecordManager(models.Manager):
 	def all_dreams(self, user):
 		return self.filter(sleep_record__user=user)
@@ -118,7 +163,7 @@ class DreamRecord(models.Model):
 	objects = DreamRecordManager()
 	sleep_record = models.ForeignKey(SleepRecord, related_name='dream_records')
 
-	# dream type
+	# dream types
 	TYPES = (
 		('N', 'Nightmare'),
 		('L', 'Lucid'),

@@ -1,0 +1,31 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Questions
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form id="getup_questions_form_id" action="{% url 'getup_questions' %}" method="post">
+			{% csrf_token %}
+			<div class="small-12 columns">
+				{{ form.minutes_to_sleep.errors }}
+				<label for="id_minutes_to_sleep"><h5 class="subheader">Minutes in bed before fell asleep:</h5></label>
+				{{ form.minutes_to_sleep }}
+			</div>
+			<div class="small-12 columns">
+				{{ form.minutes_to_getup.errors }}
+				<label for="id_minutes_to_getup"><h5 class="subheader">Minutes in bed after woke up:</h5></label>
+				{{ form.minutes_to_getup }}
+			</div>
+			<div class="small-12 columns">
+				{{form.hours_awake_in_sleep.errors }}
+				<label for="id_hours_awake_in_sleep"><h5 class="subheader">Time Awake in Middle of Night:</h5></label>
+				{{ form.hours_awake_in_sleep }}
+			</div>
+			<div class="small-12 columns text-center">
+				<input type="submit" value="Update" class="button" />
+			</div>
+		</form>
+	</div>
+{% endblock %}

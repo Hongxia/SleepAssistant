@@ -1,0 +1,25 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Sleep
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form id="sleep_form_id" action="{% url 'sleep' %}" method="post" style="display:none;">
+			{% csrf_token %}
+			{{ form.is_sleep }}
+		</form>
+		<div class="small-12 columns">
+			<button onclick="sleepClick(true)" class="large button expand">Sleep</button>
+		</div>
+		<div class="small-12 columns">
+			<button onclick="sleepClick(false)" class="large secondary button expand">Nap</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block javascript %}
+	<script src="{% static 'journal.js' %}"></script>
+{% endblock %}

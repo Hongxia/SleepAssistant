@@ -1,0 +1,21 @@
+{% extends "phone_base.html" %}
+
+{% block title %}
+Get Up
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<form id="getup_form_id" action="{% url 'getup' %}" method="post" style="display:none;">
+			{% csrf_token %}
+		</form>
+		<div class="small-12 columns">
+			<button onclick="getupClick()" class="large button expand">Get Up</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block javascript %}
+	<script src="{% static 'journal.js' %}"></script>
+{% endblock %}

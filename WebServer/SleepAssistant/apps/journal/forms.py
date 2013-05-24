@@ -34,3 +34,17 @@ class LoginEmailForm(account.forms.LoginEmailForm):
 		super(LoginEmailForm, self).__init__(*args, **kwargs)
 		self.fields['email'].widget.attrs = { 'placeholder':'you@stanford.edu' }
 		self.fields['password'].widget.attrs = { 'placeholder':'password' }
+
+class SleepForm(forms.Form):
+	is_sleep = forms.BooleanField(required=False)
+
+class GetupQuestionsForm(forms.Form):
+	minutes_to_sleep = forms.IntegerField(required=True)
+	minutes_to_getup = forms.IntegerField(required=True)
+	hours_awake_in_sleep = forms.DecimalField(required=True, max_digits=4, decimal_places=2)
+
+	def __init__(self, *args, **kwargs):
+		super(GetupQuestionsForm, self).__init__(*args, **kwargs)
+		self.fields['minutes_to_sleep'].widget.attrs = { 'placeholder':'in minutes' }
+		self.fields['minutes_to_getup'].widget.attrs = { 'placeholder':'in minutes' }
+		self.fields['hours_awake_in_sleep'].widget.attrs = { 'placeholder':'in hours, x.xx'}

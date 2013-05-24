@@ -7,7 +7,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
 	# journal app
     url(r'^sleep/$', 'SleepAssistant.apps.journal.views.sleep', name='sleep'),
-    url(r'^wakeup/$', 'SleepAssistant.apps.journal.views.wakeup', name='wakeup'),
+    url(r'^getup/$', 'SleepAssistant.apps.journal.views.getup', name='getup'),
+    url(r'^getup_questions/$', 'SleepAssistant.apps.journal.views.getup_questions', name='getup_questions'),
     url(r'^summary/$', 'SleepAssistant.apps.journal.views.summary', name='summary'),
     url(r'^record/(?P<record_id>\d+)/$', 'SleepAssistant.apps.journal.views.record', name='record'),
 

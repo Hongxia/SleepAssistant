@@ -1,7 +1,7 @@
 # Django settings for SleepAssistant project.
 
 # django imports
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 
 # python imports
 import os.path
@@ -156,7 +156,7 @@ ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
 ACCOUNT_OPEN_SIGNUP = True
 ACCOUNT_CREATE_ON_SAVE = True
 ACCOUNT_SIGNUP_REDIRECT_URL = reverse('account_login')
-#ACCOUNT_LOGIN_REDIRECT_URL = reverse('search')
+ACCOUNT_LOGIN_REDIRECT_URL = reverse('sleep')
 ACCOUNT_LOGOUT_REDIRECT_URL = reverse('account_login')
 
 # login_required / logout_required
