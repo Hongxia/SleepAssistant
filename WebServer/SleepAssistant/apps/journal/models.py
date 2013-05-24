@@ -88,7 +88,7 @@ class SleepRecord(models.Model):
 	objects = SleepRecordManager()
 	# user
 	user = models.ForeignKey(User, related_name='sleep_records')
-	date = models.DateField(auto_now_add=True)
+	date = models.DateField()
 
 	# sleep related times
 	in_bed = models.DateTimeField(blank=True, null=True)

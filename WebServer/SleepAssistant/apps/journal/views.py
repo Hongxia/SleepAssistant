@@ -109,7 +109,7 @@ def get_sleep_debt(records):
 	count = 0
 	for record in records[0:len(records)-1]:
 		count += 1
-		debt += (8 - record.total_time_asleep)
+		debt += (8 - record.total_time_asleep())
 
 	if count == 0:
 		return '-'
@@ -121,7 +121,7 @@ def get_average_sleep_hours(records):
 	count = 0
 	for record in records[0:len(records)-1]:
 		count += 1
-		total += record.total_time_asleep
+		total += record.total_time_asleep()
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
@@ -139,7 +139,7 @@ def get_average_grogginess(records):
 		return decimal.Decimal(total)/count 
 	else: 
 		return '-'
-
+'''
 def get_average_overall_feeling(records):
 	total = 0
 	count = 0
@@ -151,6 +151,7 @@ def get_average_overall_feeling(records):
 		return decimal.Decimal(total)/count 
 	else: 
 		return '-'
+		'''
 
 @login_required
 def summary(request):
@@ -163,7 +164,7 @@ def summary(request):
 		'sleep_debt' : get_sleep_debt(all_records),
 		'average_sleep_hours' : get_average_sleep_hours(all_records),
 		'average_grog' : get_average_grogginess(all_records),
-		'average_overall' : get_average_overall_feeling(all_records), 				
+		#'average_overall' : get_average_overall_feeling(all_records), 				
 	})
 
 
@@ -270,7 +271,7 @@ def update_journal_entry(request, year, month, day):
 			record.out_bed = datetime.combine(current_date, out_bed_time)
 
 			record.user = user
-			record.date = date(int(year), int(month), int(day))
+			record.date = current_date
 			record.save()
 
 			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
