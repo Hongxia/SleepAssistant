@@ -11,8 +11,30 @@ class UserProfile(models.Model):
 	birthday = models.DateField()
 	user = models.ForeignKey(User, unique=True)
 
+	# state
+	YEAR_IN_SCHOOL_CHOICES = (
+	    ('NA', 'Nap'),
+	    ('SL', 'Sleep'),
+	    ('AW', 'Awake'),
+	)
+	state = models.CharField(max_length=2, default='AW')
+	onset = models.DateTimeField(blank=True, null=True)
+
 	def get_age(self):
 		return int((datetime.now() - self.birthday).days / 365.2425)
+
+	def nap(self):
+		self.state = 'NA'
+		self.onset = datetime.now()
+
+	def sleep(self):
+		self.state = 'SL'
+		self.onset = datetime.now()
+
+	# returns a timedelta object
+	def wakeup(self):
+		self.state = 'AW'
+		return (datetime.now() - self.onset)
 
 class SleepRecordManager(models.Manager):
 	def all_records(self, user):
@@ -24,6 +46,13 @@ class SleepRecordManager(models.Manager):
 		sunday = monday + datetime.timedelta(days=7)
 		return self.filter(user=user, date__gte=monday, date__lte=sunday)
 
+	def daily_record(self, user, date):
+		try:
+			record = self.get(user=user, date=date)
+			return record
+		except SleepRecord.DoesNotExist:
+			return None
+
 class SleepRecord(models.Model):
 	objects = SleepRecordManager()
 	# user
@@ -31,10 +60,10 @@ class SleepRecord(models.Model):
 	date = models.DateField(auto_now_add=True)
 
 	# sleep related times
-	in_bed = models.TimeField(blank=True, null=True)
-	fall_asleep = models.TimeField(blank=True, null=True)
-	wake_up = models.TimeField(blank=True, null=True)
-	out_bed = models.TimeField(blank=True, null=True)
+	in_bed = models.DateTimeField(blank=True, null=True)
+	fall_asleep = models.DateTimeField(blank=True, null=True)
+	wake_up = models.DateTimeField(blank=True, null=True)
+	out_bed = models.DateTimeField(blank=True, null=True)
 	awake_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 	napping_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
 	grogginess = models.IntegerField(default=0)
@@ -60,7 +89,7 @@ class SleepRecord(models.Model):
 	eighteen_twenty = models.IntegerField(blank=True, choices=ALERTNESS)
 	twenty_twenty_two = models.IntegerField(blank=True, choices=ALERTNESS)
 	twenty_two_zero = models.IntegerField(blank=True, choices=ALERTNESS)
-	optimal_time = models.TimeField(blank=True, null=True)
+	optimal_time = models.DateTimeField(blank=True, null=True)
 	overall = models.IntegerField(blank=True)
 
 	# sleep altering factors

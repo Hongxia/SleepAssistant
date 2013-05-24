@@ -33,3 +33,15 @@ class SignupView(account.views.SignupView):
 
 class LoginView(account.views.LoginView):
     form_class = LoginEmailForm
+
+def sleep(request):
+	pass
+
+def wakeup(request):
+	pass
+
+def summary(request):
+	pass
+
+def record(request, record_id):
+	pass

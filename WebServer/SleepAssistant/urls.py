@@ -5,10 +5,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # url(r'^$', 'SleepAssistant.views.home', name='home'),
-    # url(r'^SleepAssistant/', include('SleepAssistant.foo.urls')),
-    #url(r'^sleep/$', 'SleepAssistant.apps.journal.views.sleep'),
-    
+	# journal app
+    url(r'^sleep/$', 'SleepAssistant.apps.journal.views.sleep', name='sleep'),
+    url(r'^wakeup/$', 'SleepAssistant.apps.journal.views.wakeup', name='wakeup'),
+    url(r'^summary/$', 'SleepAssistant.apps.journal.views.summary', name='summary'),
+    url(r'^record/(?P<record_id>\d+)/$', 'SleepAssistant.apps.journal.views.record', name='record'),
+
     # django-user-accounts
 	url(r'^account/login/$', SleepAssistant.apps.journal.views.LoginView.as_view(), name='account_login'),
 	url(r'^account/signup/$', SleepAssistant.apps.journal.views.SignupView.as_view(), name='account_signup'),
