@@ -24,19 +24,19 @@
 		<nav style="margin-bottom:3px;" class="top-bar"> 
 			<ul class="left">
 				<li class="name">
-				<h1><a href="#1">Record</a></h1>
+				<h1><a href="{%url 'sleep' %}">Record</a></h1>
 				</li>
 			</ul>
 			<ul class="right">
 				<li class="name">
-				<h1><a href="#2">Summary</a></h1>
+				<h1><a href="{% url 'summary' %}">Summary</a></h1>
 				</li>
 			</ul>
 
 		<div style="width:100%">
 			<div class="center">
 				<div style="text-align:center" class="name">
-					<h1><a href="#3">My Data</a></h1>
+					<h1><a href="{% url 'data' 1%}">My Data</a></h1> 
 				</div>
 			</div>
 		</div>

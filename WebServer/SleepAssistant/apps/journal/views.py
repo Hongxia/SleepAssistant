@@ -102,10 +102,10 @@ def getup_questions(request):
 		'form' : form,
 	})
 
-#@login_required
+@login_required
 def summary(request):
-	pass
+	return render(request , 'summary.html')
 
-#@login_required
-def record(request, record_id):
-	pass
+@login_required
+def data(request, record_id):
+	return render(request, 'data.html')
