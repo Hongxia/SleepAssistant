@@ -7,14 +7,9 @@ Sign up
 {% block content %}
     <div class="row">
         <!-- <div style="display:inline-block;" class="small-12 columns"> -->
+
          <div style="padding-left:3px;"><h4> Summary </h4></div>
         <!-- </div> -->
-
-        <form id="signup_form" method="post" action="{% url 'account_signup' %}" class="custom">
-            {% csrf_token %}
-            {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
             <fieldset>
                 <div class="small-12 columns">
                     <h5 style="text-align: center;" class="subheader">Your Current Sleep Debt</h5><h4 style="text-align: center;"> 3000</h4>
@@ -28,8 +23,37 @@ Sign up
                     <h5 style="text-align: center;" class="subheader">Your Average Morning Grogginess</h5><h4 style="text-align: center;"> 3.14159 mins</h4>
                 </div>
 
-                
             </fieldset>
-        </form>
+        <a href="#" data-reveal-id="firstModal" class="radius medium button">About&hellip;</a>
+        <div id="firstModal" class="text-center reveal-modal">
+          <h2>Welcome to Sleep Assistant!</h2>
+          <p>This is your personal assistant that will help you track you sleep thourgh the course of Sleep &amp; Dreams. You will be able to easily track your sleep data and have everything you need to learn about imporving your sleep hygene!</p>
+          <!-- <p><b>Record: </b> Lets you actively record your sleep data through your daily life</p>
+          <p><b>My Data: </b> Check out your sleep data for the day and update any missing fields</p>
+          <p><b>Summary: </b> Shows you a summary of your key sleep data for quick reference!</p> -->
+          <!-- <p><a href="#" data-reveal-id="secondModal" class="secondary button">Second Modal…</a></p> -->
+          <a class="close-reveal-modal">&#215;</a>
+          <div><a data-reveal-id="secondModal" class="button round small">Next</a></div>
+        </div>
+        <div id="secondModal" class="text-center reveal-modal">
+          <h2 class="text-center">Record</h2>
+          <h4>Lets you actively record your sleep data through your daily life</h4>
+          <a class="close-reveal-modal">&#215;</a>
+          <div><a data-reveal-id="thirdModal" class="button round small">Next</a></div>
+        </div>
+        <div id="thirdModal" class="text-center reveal-modal">
+          <h2 class="text-center">My Data</h2>
+          <h4>Check out your sleep data for the day and update any missing fields</h4>
+          <a class="close-reveal-modal">&#215;</a>
+          <div><a data-reveal-id="fourthModal" class="button round small">Next</a></div>
+        </div>
+        <div id="fourthModal" class="text-center reveal-modal">
+          <h2 class="text-center">Summary</h2>
+          <h4>Shows you a summary of your key sleep data for quick reference!</h4>
+          <a class="close-reveal-modal">&#215;</a>
+          <br />
+          <h4> You're now ready to start tracking your sleep with your brand new Sleep Assistant!</h4>
+        </div>
+        <script src="http://foundation.zurb.com/docs/assets/docs.js"></script>
     </div>
 {% endblock %}

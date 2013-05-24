@@ -17,6 +17,32 @@ Login
             {% endif %}
         	
         	<fieldset>
+                <div id="firstModal" class="text-center reveal-modal">
+                      <h2>Welcome to Sleep Assistant!</h2>
+                      <p>This is your personal assistant that will help you track you sleep thourgh the course of Sleep &amp; Dreams. You will be able to easily track your sleep data and have everything you need to learn about imporving your sleep hygene!</p>
+                      <a class="close-reveal-modal">&#215;</a>
+                      <div><a data-reveal-id="secondModal" class="button round small">Next</a></div>
+                    </div>
+                    <div id="secondModal" class="text-center reveal-modal">
+                      <h2 class="text-center">Record</h2>
+                      <h4>Lets you actively record your sleep data through your daily life</h4>
+                      <a class="close-reveal-modal">&#215;</a>
+                      <div><a data-reveal-id="thirdModal" class="button round small">Next</a></div>
+                    </div>
+                    <div id="thirdModal" class="text-center reveal-modal">
+                      <h2 class="text-center">My Data</h2>
+                      <h4>Check out your sleep data for the day and update any missing fields</h4>
+                      <a class="close-reveal-modal">&#215;</a>
+                      <div><a data-reveal-id="fourthModal" class="button round small">Next</a></div>
+                    </div>
+                    <div id="fourthModal" class="text-center reveal-modal">
+                      <h2 class="text-center">Summary</h2>
+                      <h4>Shows you a summary of your key sleep data for quick reference!</h4>
+                      <a class="close-reveal-modal">&#215;</a>
+                      <br />
+                      <h4> You're now ready to start tracking your sleep with your brand new Sleep Assistant!</h4>
+                    </div>
+                    <script src="http://foundation.zurb.com/docs/assets/docs.js"></script>
             	<div class="small-12 columns">
             		<label for="id_email"><h5 class="subheader">E-mail:</h5></label>
 					{{ form.email }}
@@ -35,7 +61,8 @@ Login
         		<div class="small-12 columns text-right">
         			<button type="submit" class="button">Login</button>
         			<a href="{% url 'account_signup' %}" class="secondary button">Signup</a></li>
-        		</div>
+        		    <a href="#" data-reveal-id="firstModal" class="left secondary button">About&hellip;</a>
+                </div>
            	</fieldset>
         </form>
 	</div>
