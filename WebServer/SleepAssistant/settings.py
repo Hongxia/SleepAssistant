@@ -148,6 +148,9 @@ INSTALLED_APPS = (
     # django-storages
     'storages',
 
+    # gunicorn
+    'gunicorn',
+
     # project apps
     'SleepAssistant.apps.journal',    
 )
