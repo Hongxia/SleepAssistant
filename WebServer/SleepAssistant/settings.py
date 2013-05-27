@@ -152,7 +152,7 @@ INSTALLED_APPS = (
     'gunicorn',
 
     # project apps
-    'SleepAssistant.apps.journal',    
+    'SleepAssistant.apps.journal',
 )
 
 # django-user-accounts
