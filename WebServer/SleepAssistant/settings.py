@@ -19,6 +19,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config(default='postgres://sleepdev:sleepdev@localhost:5432/sleepdb')
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -29,7 +33,7 @@ DATABASES = {
         'DATABASE_PORT': '' 
     }
 }
-
+'''
 
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False

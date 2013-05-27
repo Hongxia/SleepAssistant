@@ -9,6 +9,10 @@ Tian Zhao
 Shaurya Saluja
 
 ================================
+AWS S3 Service:
+> $VIRTUAL_ENV/bin/postactivate stores the information
+
+================================
 MySQL Setup:
 
 If you don't have MySQL get it first:
