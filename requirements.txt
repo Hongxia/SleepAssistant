@@ -4,6 +4,7 @@ boto==2.9.4
 django-appconf==0.5
 django-storages==1.1.8
 django-user-accounts==1.0b12
+gunicorn==0.17.4
 psycopg2==2.5
 pytz==2012j
 wsgiref==0.1.2
