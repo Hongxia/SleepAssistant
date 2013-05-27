@@ -139,11 +139,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     
     # django admin
-    'django.contrib.admin',
-    'django.contrib.admindocs',
+    #'django.contrib.admin',
+    #'django.contrib.admindocs',
 
     # django-user-accounts
     'account',
+
+    # django-storages
+    'storages',
 
     # project apps
     'SleepAssistant.apps.journal',    
@@ -173,6 +176,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
 ]
+
+if not DEBUG:
+    # Amazon S3 Storage
+    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    STATIC_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

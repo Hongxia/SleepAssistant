@@ -46,33 +46,6 @@ Sign up
             		<label for="id_birthday"><h5 class="subheader">Birthday:</h5></label>
                     {{ form.birthday }}
             	</div>
-                
-
-              <!--  <div class="select"><span>
-                <select name="date_naissance_day" id="jour">
-                <option value="--">J</option>
-                {% for i in days %}
-                <option value="{{i}}" {% if form.date_naissance_day.value == i %}selected{% endif %}>{{i}}</option>
-                {% endfor %}
-                </select>
-                </span></div>
-                <div class="select"><span>
-                <select name="date_naissance_month" id="mois">
-                <option value="--">M</option>
-                {% for i in months %}
-                <option value="{{i}}" {% if form.date_naissance_month.value == i %}selected{% endif %}>{{i}}</option>
-                {% endfor %}
-                </select>
-                </span></div>
-                <div class="select last"><span>
-                <select name="date_naissance_year" id="annee">
-                <option value="--">A</option>
-                {% for i in years %}
-                <option value="{{i}}" {% if form.date_naissance_year.value == i %}selected{% endif %}>{{i}}</option>
-                {% endfor %}
-                </select>
-                </span></div>-->
-
 
             	<!--Not really sure what does code field do...-->
             	<div class="small-12 columns">{{ form.code }}</div>

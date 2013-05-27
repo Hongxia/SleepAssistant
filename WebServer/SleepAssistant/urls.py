@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 import SleepAssistant.apps.journal.views
 
-from django.contrib import admin
-admin.autodiscover()
+#from django.contrib import admin
+#admin.autodiscover()
 
 urlpatterns = patterns('',
 	# journal app
@@ -19,6 +19,6 @@ urlpatterns = patterns('',
  	url(r'^account/', include('account.urls')),
 
     # admin
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    #url(r'^admin/', include(admin.site.urls)),
 )
