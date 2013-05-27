@@ -1,1 +1,1 @@
-web: python WebServer/manage.py run_gunicorn
+web: python WebServer/manage.py collectstatic --noinput; python WebServer/manage.py run_gunicorn
