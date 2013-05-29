@@ -16,7 +16,7 @@ Sleep Journal
                 {% if record.is_completed != True %}
                     <a href="{% url 'update_journal_entry' date.year date.month date.day %}">Uncompleted</a> 
                 {% endif %}
-                Journal: 
+                Journal:<br>
                 <a href="#"><strong>{{ date }}</strong></a>
             </h3>
 
@@ -136,7 +136,7 @@ Sleep Journal
                                 <hr>
                                 
                                 <div class="row">
-                                    <div class="small-6 columns text-right">Time awake in bed (calculated):</div>
+                                    <div class="small-6 columns text-right">Time awake in bed:</div>
                                     <div class="small-6 columns">
                                         {% if record.time_awake_in_bed %}
                                             {{ record.time_awake_in_bed|floatformat:2|intcomma }} 
@@ -148,7 +148,7 @@ Sleep Journal
                                 </div>
 
                                 <div class="row">
-                                    <div class="small-6 columns text-right">Time asleep at night (calculated):</div>
+                                    <div class="small-6 columns text-right">Time asleep at night:</div>
                                     <div class="small-6 columns">
                                         {% if record.time_asleep_at_night %}
                                             {{ record.time_asleep_at_night|floatformat:2|intcomma }} 
@@ -160,7 +160,7 @@ Sleep Journal
                                 </div>
 
                                 <div class="row">
-                                    <div class="small-6 columns text-right">Total asleep time (calculated):</div>
+                                    <div class="small-6 columns text-right">Total asleep time:</div>
                                     <div class="small-6 columns">
                                         {% if record.total_time_asleep %}
                                             {{ record.total_time_asleep|floatformat:2|intcomma }} 
