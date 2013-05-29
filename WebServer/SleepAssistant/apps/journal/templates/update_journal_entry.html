@@ -4,19 +4,116 @@
 Update Journal Entry
 {% endblock %}
 
+{% block navheader %}
+{% if record == None %}Create{% else %}Update{% endif %} Sleep Journal
+{% endblock %}
+
+{% load humanize %}
 {% block content %}
-	<div class="row">
+	<div class="small-12 columns text-center">
+		<h3 class="subheader text-center">Journal: <a href="#"><strong>{{ date }}</strong></a></h3>
+		<hr>
 		<form id='update_journal_entry_form' method='POST' action="{% url 'update_journal_entry' date.year date.month date.day %}" class="custom">
 			{% csrf_token %}
-			{{ form.as_p }}
 
-			<div class="small-12 columns">
+			<div class="small-10 columns text-center">
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Went to bed at:</h4></div>
+					<div class="small-6 columns">
+						<div class="row collapse">
+							<div class="small-7 columns">
+								{{ form.in_bed }}
+							</div>
+							<div class="small-5 columns">
+								{{ form.in_bed_date }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Fell asleep at:</h4></div>
+					<div class="small-6 columns">
+						<div class="row collapse">
+							<div class="small-7 columns">
+								{{ form.fall_asleep }}
+							</div>
+							<div class="small-5 columns">
+								{{ form.fall_asleep_date }}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Woke up at:</h4></div>
+					<div class="small-6 columns">
+						<div class="row collapse">
+							<div class="small-7 columns">
+								{{ form.wake_up }}
+							</div>
+							<div class="small-5 columns">
+								<select>
+									<option>Today</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Left bed at:</h4></div>
+					<div class="small-6 columns">
+						<div class="row collapse">
+							<div class="small-7 columns">
+								{{ form.out_bed }}
+							</div>
+							<div class="small-5 columns">
+								<select>
+									<option>Today</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<hr>
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Hours awake at night:</h4></div>
+					<div class="small-6 columns">{{ form.awake_hours }}</div>
+				</div>
+
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Morning Grogginess:</h4></div>
+					<div class="small-6 columns">{{ form.grogginess }}</div>
+				</div>
+
+				<hr>
+				
+				<div class="row">
+					<div class="small-6 columns text-right"><h4 class="subheader">Hours spent napping:</h4></div>
+					<div class="small-6 columns">{{ form.napping_hours }}</div>
+				</div>
+			</div>
+
+
+			<div class="small-12 columns vertical-space">							
 				{% if record == None %}
-					<button type="submit" class="button">Create</button>
+					<button type="submit" class="button expand">Create</button>
 				{% else %}
-					<button type="submit" class="button">Update</button>
+					<button type="submit" class="button expand">Update</button>
 				{% endif %}
 			</div>
 		</form>
 	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/layout.js' %}"></script>
 {% endblock %}

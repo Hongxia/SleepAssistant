@@ -257,13 +257,14 @@ def update_journal_entry(request, year, month, day):
 			fall_asleep_time = form.cleaned_data['fall_asleep']
 			wake_up_time = form.cleaned_data['wake_up']
 			out_bed_time = form.cleaned_data['out_bed']
-			if form.cleaned_data['in_bed_yesterday']:
+
+			if form.cleaned_data['in_bed_date'] == -1:
 				yesterday = current_date - timedelta(days=1)
 				record.in_bed = datetime.combine(yesterday, in_bed_time)
 			else:
 				record.in_bed = datetime.combine(current_date, in_bed_time)
 
-			if form.cleaned_data['fall_asleep_yesterday']:
+			if form.cleaned_data['fall_asleep_date'] == -1:
 				yesterday = current_date - timedelta(days=1)
 				record.fall_asleep = datetime.combine(yesterday, fall_asleep_time)
 			else:
