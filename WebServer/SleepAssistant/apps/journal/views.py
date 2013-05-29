@@ -335,26 +335,28 @@ def update_alertness(request, year, month, day):
 			record.twenty_two_zero = form.cleaned_data['twenty_two_zero']
 			record.overall = form.cleaned_data['overall_feeling']
 			opt_time = form.cleaned_data['optimal_time']
-			record.optimal_time = datetime.combine(current_date, opt_time)
+			if (opt_time != None):
+				record.optimal_time = datetime.combine(current_date, opt_time)
 			record.save()
 			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
 	else:
-		form = AlertnessEntryForm()
-		# form = AlertnessEntryForm(instance=record, initial={ 
+		#form = AlertnessEntryForm()
+		form = AlertnessEntryForm(instance=record, initial={ 
 
-		# 	'zero_two': record.zero_two,
-		# 	'two_four':	record.two_four,
-		# 	'four_six': record.four_six,
-		# 	'six_eight': record.six_eight,
-		# 	'eight_ten': record.eight_ten,
-		# 	'ten_twelve': record.ten_twelve,
-		# 	'twelve_fourteen': record.twelve_fourteen,
-		# 	'fourteen_sixteen': record.fourteen_sixteen,
-		# 	'sixteen_eighteen': record.sixteen_eighteen,
-		# 	'eighteen_twenty': record.eighteen_twenty,
-		# 	'twenty_twenty_two': record.twenty_twenty_two,
-		# 	'twenty_two_zero': record.twenty_two_zero,
-		# 	'optimal_time':record.
+			'zero_two': record.zero_two,
+			'two_four':	record.two_four,
+			'four_six': record.four_six,
+			'six_eight': record.six_eight,
+			'eight_ten': record.eight_ten,
+			'ten_twelve': record.ten_twelve,
+			'twelve_fourteen': record.twelve_fourteen,
+			'fourteen_sixteen': record.fourteen_sixteen,
+			'sixteen_eighteen': record.sixteen_eighteen,
+			'eighteen_twenty': record.eighteen_twenty,
+			'twenty_twenty_two': record.twenty_twenty_two,
+			'twenty_two_zero': record.twenty_two_zero,
+			'optimal_time':record.optimal_time,
+			})
 
 		# 	record.two_four = form.cleaned_data['two_four']
 		# 	record.four_six = form.cleaned_data['four_six']

@@ -83,7 +83,67 @@ Journal Entry
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-center"><a href="{% url 'update_journal_entry' date.year date.month date.day %}" class="button medium success radius">Edit Entry</a></div>
+            <div class="text-center"><a href="{% url 'update_journal_entry' date.year date.month date.day %}" class="button medium success radius">Edit Entry</a>
+            </div>
+            <table align="center">
+            <thead>
+            <tr>
+              <th width="150">12am-2am</th>
+              <th width="150">2am-4am</th>
+              <th width="150">4am-6am</th>
+              <th width="150">6am-8am</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{record.zero_two}}</td>
+              <td>{{record.two_four}}</td>
+              <td>{{record.four_six}}</td>
+              <td>{{record.six_eight}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table align="center">
+          <thead>
+            <tr>
+              <th width="150">8am-10am</th>
+              <th width="150">10am-12pm</th>
+              <th width="150">12pm-2pm</th>
+              <th width="150">2pm-4pm</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{record.eight_ten}}</td>
+              <td>{{record.ten_twelve}}</td>
+              <td>{{record.twelve_fourteen}}</td>
+              <td>{{record.fourteen_sixteen}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table align="center">
+          <thead>
+            <tr>
+              <th width="150">4pm-6pm</th>
+              <th width="150">6pm-8pm</th>
+              <th width="150">8pm-10pm</th>
+              <th width="150">10pm-12am</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{record.sixteen_eighteen}}</td>
+              <td>{{record.eighteen_twenty}}</td>
+              <td>{{record.twenty_twenty_two}}</td>
+              <td>{{record.twenty_two_zero}}</td>
+            </tr>
+          </tbody>
+        </table>
+                
+
+
+        <div class="text-center"><a href="{% url 'alertness_entry' date.year date.month date.day %}" class="button medium success radius">Edit Alertness</a>
+        </div>
             {% endif %}
         </fieldset>
     </div>
