@@ -107,9 +107,10 @@ def getup_questions(request):
 def get_sleep_debt(records):
 	debt = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		debt += (8 - record.total_time_asleep())
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			debt += (8 - record.total_time_asleep())
 
 	if count == 0:
 		return '-'
@@ -119,9 +120,10 @@ def get_sleep_debt(records):
 def get_average_sleep_hours(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.total_time_asleep()
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.total_time_asleep()
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
@@ -131,9 +133,10 @@ def get_average_sleep_hours(records):
 def get_average_grogginess(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.grogginess
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.grogginess
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
@@ -158,9 +161,13 @@ def summary(request):
 	user = request.user
 	profile = UserProfile.objects.get(user=user)
 	all_records = SleepRecord.objects.all_records(user)
+	if len(all_records) == 0:
+		num_records = 0
+	else:
+		num_records = len(all_records) - 1
 
 	return render(request, 'summary.html', {
-		'record_count' : len(all_records) - 1,
+		'record_count' : num_records,
 		'sleep_debt' : get_sleep_debt(all_records),
 		'average_sleep_hours' : get_average_sleep_hours(all_records),
 		'average_grog' : get_average_grogginess(all_records),
