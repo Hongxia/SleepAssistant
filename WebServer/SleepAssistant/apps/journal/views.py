@@ -175,6 +175,8 @@ def summary(request):
 	})
 
 
+
+
 @login_required
 def journal_entry(request, year, month, day):
 	user = request.user
@@ -234,8 +236,6 @@ def journal_entry_old(request, record_id):
 	else:
 		prev_id = prev_record.id
 
-
-
 	# next_id is None if current record is today's record
 	# next_id / prev_id is 0 if it does not exist yet
 	return render(request, 'journal_entry.html', {
@@ -243,6 +243,8 @@ def journal_entry_old(request, record_id):
 		'next_id' : next_id,
 		'prev_id' : prev_id,
 	})
+
+
 
 @login_required
 def update_journal_entry(request, year, month, day):
@@ -254,10 +256,10 @@ def update_journal_entry(request, year, month, day):
 		return HttpResponseNotFound('<h1>Date not valid.</h1>')
 	
 	if request.method == 'POST':
-		form = JournalEntryForm(request.POST)
+		form = JournalEntryForm(request.POST)		
+
 		if form.is_valid():
 			record = form.save(commit=False)
-			
 			in_bed_time = form.cleaned_data['in_bed']
 			fall_asleep_time = form.cleaned_data['fall_asleep']
 			wake_up_time = form.cleaned_data['wake_up']
@@ -296,8 +298,92 @@ def update_journal_entry(request, year, month, day):
 				'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
 			})
 
+	if request.method == 'POST':
+		record = SleepRecord.objects.daily_record(user, current_date)
 	# next_date is None if current record is today's record
 	return render(request, 'update_journal_entry.html', {
+		'form' : form,
+		'date' : current_date,
+		'record' : record,
+	})
+
+@login_required
+def update_alertness(request, year, month, day):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	try:
+		current_date = date(int(year), int(month), int(day))
+	except ValueError:
+		return HttpResponseNotFound('<h1>Date not valid.</h1>')
+	
+	if request.method == 'POST':
+		form = AlertnessEntryForm(request.POST)
+		if form.is_valid():
+			current_date = date(int(year), int(month), int(day))
+			record = SleepRecord.objects.daily_record(user, current_date)
+			record.zero_two = form.cleaned_data['zero_two']
+			record.two_four = form.cleaned_data['two_four']
+			record.four_six = form.cleaned_data['four_six']
+			record.six_eight = form.cleaned_data['six_eight']
+			record.eight_ten = form.cleaned_data['eight_ten']
+			record.ten_twelve = form.cleaned_data['ten_twelve']
+			record.twelve_fourteen = form.cleaned_data['twelve_fourteen']
+			record.fourteen_sixteen = form.cleaned_data['fourteen_sixteen']
+			record.sixteen_eighteen = form.cleaned_data['sixteen_eighteen']
+			record.eighteen_twenty = form.cleaned_data['eighteen_twenty']
+			record.twenty_twenty_two = form.cleaned_data['twenty_twenty_two']
+			record.twenty_two_zero = form.cleaned_data['twenty_two_zero']
+			record.overall = form.cleaned_data['overall_feeling']
+			opt_time = form.cleaned_data['optimal_time']
+			record.optimal_time = datetime.combine(current_date, opt_time)
+			record.save()
+			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
+	else:
+		record = SleepRecord.objects.daily_record(user, current_date)
+		form = AlertnessEntryForm()
+		# form = AlertnessEntryForm(instance=record, initial={ 
+
+		# 	'zero_two': record.zero_two,
+		# 	'two_four':	record.two_four,
+		# 	'four_six': record.four_six,
+		# 	'six_eight': record.six_eight,
+		# 	'eight_ten': record.eight_ten,
+		# 	'ten_twelve': record.ten_twelve,
+		# 	'twelve_fourteen': record.twelve_fourteen,
+		# 	'fourteen_sixteen': record.fourteen_sixteen,
+		# 	'sixteen_eighteen': record.sixteen_eighteen,
+		# 	'eighteen_twenty': record.eighteen_twenty,
+		# 	'twenty_twenty_two': record.twenty_twenty_two,
+		# 	'twenty_two_zero': record.twenty_two_zero,
+		# 	'optimal_time':record.
+
+		# 	record.two_four = form.cleaned_data['two_four']
+		# 	record.four_six = form.cleaned_data['four_six']
+		# 	record.six_eight = form.cleaned_data['six_eight']
+		# 	record.eight_ten = form.cleaned_data['eight_ten']
+		# 	record.ten_twelve = form.cleaned_data['ten_twelve']
+		# 	record.twelve_fourteen = form.cleaned_data['twelve_fourteen']
+		# 	record.fourteen_sixteen = form.cleaned_data['fourteen_sixteen']
+		# 	record.sixteen_eighteen = form.cleaned_data['sixteen_eighteen']
+		# 	record.eighteen_twenty = form.cleaned_data['eighteen_twenty']
+		# 	record.twenty_twenty_two = form.cleaned_data['twenty_twenty_two']
+		# 	record.twenty_two_zero = form.cleaned_data['twenty_two_zero']
+		# 	record.overall = form.cleaned_data['overall_feeling']
+		# 	opt_time = form.cleaned_data['optimal_time']
+		# 	record.optimal_time = datetime.combine(current_date, opt_time)
+
+
+
+		# 		'in_bed_time' : record.in_bed.time(),
+		# 		'fall_asleep_time' : record.fall_asleep.time(),
+		# 		'wake_up_time' : record.wake_up.time(),
+		# 		'out_bed_time' : record.out_bed.time(),
+		# 		'in_bed_yesterday' : record.in_bed.date() != current_date,
+		# 		'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
+		# })
+
+	# next_date is None if current record is today's record
+	return render(request, 'update_alertness_entry.html', {
 		'form' : form,
 		'date' : current_date,
 		'record' : record,
