@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load tags %}
 
 <!DOCTYPE html>
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="en"> <![endif]-->
@@ -17,44 +18,48 @@
 </head>
 
 <body>
-	<!-- body content here -->
 	{% block header %}
-		<nav style="margin-bottom:3px;" class="top-bar"> 
-			<ul class="left">
+	<div class="fixed">
+		<nav class="top-bar"> 
+			<ul class="title-area">
 				<li class="name">
-				<h1><a href="{%url 'sleep' %}">Record</a></h1>
+					<h1><a href="#">Sleep Assistant</a></h1>
 				</li>
-			</ul>
-			<ul class="right">
-				<li class="name">
-				<h1><a href="{% url 'summary' %}">Summary</a></h1>
+				<li class="toggle-topbar menu-icon">
+					<a href="#"><span>Menu</span></a>
 				</li>
 			</ul>
 
-		<div style="width:100%">
-			<div class="center">
-				<div style="text-align:center" class="name">
-					<!-- TODO: pass today's record's id -->
-					<h1><a href="{% url 'journal_entry' 2013 5 24 %}">Journal</a></h1> 
-				</div>
-			</div>
-		</div>
-
+			<section class="top-bar-section">
+				<ul class="left">
+					<li class="divider"></li>
+					<li class="{% active request 'sleep' %}">
+						<a href="{% url 'sleep' %}">Sleep</a>
+					</li>
+					<li class="divider"></li>
+					<li class="{% active request 'journal_entry' %}">
+						<a href="/journal/{% now 'Y/m/d' %}">Journal</a>
+					</li>
+					<li class="divider"></li>
+					<li class="{% active request 'summary' %}">
+						<a href="{% url 'summary' %}">Summary</a>
+					</li>
+				</ul>
+				<ul class="right">
+					<li class="divider"></li>
+					<li class="has-form">
+						{% if user.is_authenticated %}
+							<a href="#" onclick="$('#logout_form').submit();" class="button">Logout</a>
+							<form display="none" id="logout_form" method="post" action="{% url 'account_logout' %}" class="custom">{% csrf_token %}</form>
+						{% else %}
+							<a href="{% url 'account_login' %}" class="button">Login</a>
+						{% endif %}
+					</li>
+					<li class="divider"></li>
+				</ul>
+			</section>
 		</nav>
-		<div style="margin-right:3px;" class="right">
-			{% if user.is_authenticated %}
-				<form display="none" id="logout_form" method="post" action="{% url 'account_logout' %}" class="custom">
-					{% csrf_token %}
-				</form>
-				<a style="margin-bottom:2px;" class="small round button" onclick="$('#logout_form').submit();">
-					Logout
-				</a>
-			{% else %}
-				<a style="margin-bottom:2px;" href="{% url 'account_login' %}" class="small button round">
-					Login
-				</a>
-			{% endif %}
-		</div>
+	</div>
 	{% endblock %}
 	
 	<div class="container">
