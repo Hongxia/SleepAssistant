@@ -50,6 +50,34 @@ class GetupQuestionsForm(forms.Form):
 		self.fields['minutes_to_getup'].widget.attrs = { 'placeholder':'in minutes' }
 		self.fields['hours_awake_in_sleep'].widget.attrs = { 'placeholder':'in hours, x.xx'}
 
+class AlertnessEntryForm(ModelForm):
+	feels = (
+    	(1, 1),
+    	(2, 2),
+   	   	(3, 3),
+   	  	(4, 4),
+   	  	(5, 5),
+   	   	(6, 6),
+   	   	(7, 7),
+   	   	(8, 8),
+   	   	(9, 9),
+   	   	(10, 10),
+   	)
+
+   	overall_feeling = forms.ChoiceField(choices=feels)
+
+	class Meta:
+		model = SleepRecord
+		fields = (
+			'zero_two', 'two_four','four_six', 'six_eight', 'eight_ten', 
+			'ten_twelve','twelve_fourteen','fourteen_sixteen', 'sixteen_eighteen',
+			'eighteen_twenty' ,'twenty_twenty_two', 'twenty_two_zero', 
+			'optimal_time'
+		)
+		widgets = {
+			'optimal_time': forms.TimeInput(format='%H:%M'),
+		}
+
 class JournalEntryForm(ModelForm):
 	in_bed_yesterday = forms.BooleanField()
 	fall_asleep_yesterday = forms.BooleanField()
