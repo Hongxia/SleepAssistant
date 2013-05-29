@@ -183,7 +183,10 @@ class SleepRecord(models.Model):
 	''' these are functions that updates the record '''
 	def add_nap_time(self, timedelta):
 		napped_hours = decimal.Decimal(timedelta.seconds)/3600
-		self.napping_hours += napped_hours
+		if self.napping_hours:
+			self.napping_hours += napped_hours
+		else:
+			self.napping_hours = napped_hours
 		self.save()
 
 	def record_sleep(self, inbed, outbed):

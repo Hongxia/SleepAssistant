@@ -8,12 +8,14 @@ Get Up
 Get Up
 {% endblock %}
 
+{% load humanize %}
 {% block content %}
 	<div id="vertical-center" class="small-12 columns">
 		<form id="getup_form_id" action="{% url 'getup' %}" method="post" style="display:none;">
 			{% csrf_token %}
 		</form>
 		<h3>Bonjour à</h3>
+		<h4 class="subheader">You went to bed {{ in_bed.date|naturalday }} at {{ in_bed.time }}</h4>
 		<h4 class="subheader">Tap "Get Up" to register your time out of bed.</h4>
 		{% if is_sleep %}<h4 class="subheader">Please also take a few minutes to help Sleep Assistant record the details of your sleep.</h4>{% endif %}
 		<div class="row collapse">

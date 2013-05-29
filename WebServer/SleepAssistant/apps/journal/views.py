@@ -70,7 +70,9 @@ def sleep(request):
 def getup(request):
 	user = request.user
 	profile = UserProfile.objects.get(user=user)
-	
+	if not profile.is_not_awake():
+		return HttpResponseRedirect(reverse('sleep'))
+
 	if request.method == 'POST':
 		# should always be valid
 		if profile.is_sleep():
@@ -86,6 +88,7 @@ def getup(request):
 
 	return render(request, 'getup.html', {
 		"is_sleep" : profile.is_sleep(),
+		'in_bed' : profile.onset,
 	})
 
 @login_required

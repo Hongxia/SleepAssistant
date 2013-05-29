@@ -26,7 +26,7 @@ Sleep Journal
                     {% if prev_date == None %}
                         <li><a href="#" class="disabled button">--</a></li>    
                     {% else %}
-                        <li><a href="{% url 'journal_entry' prev_date.year prev_date.month prev_date.day %}" class="button">{{ prev_date }}</a></li>
+                        <li><a href="{% url 'journal_entry' prev_date.year prev_date.month prev_date.day %}" class="button"><</a></li>
                     {% endif %}
                     {% if record == None %}
                         <li><a href="{% url 'update_journal_entry' date.year date.month date.day %}" class="button secondary">Create</a></li>
@@ -36,14 +36,14 @@ Sleep Journal
                     {% if next_date == None %}
                         <li><a href="#" class="disabled button">--</a></li>
                     {% else %}
-                        <li><a href="{% url 'journal_entry' next_date.year next_date.month next_date.day %}" class="button">{{ next_date }}</a></li>
+                        <li><a href="{% url 'journal_entry' next_date.year next_date.month next_date.day %}" class="button">></a></li>
                     {% endif %}
                 </ul>
             </div>
             <hr>
 
             {% if record != None %}
-                <h4 class="subheader">
+                <h6 class="subheader">
                     <div class="section-container auto" data-section>
                         <section>
                             <p class="title" data-section-title><a href="#">&emsp;&emsp;Sleep Data&emsp;&emsp;</a></p>
@@ -327,7 +327,7 @@ Sleep Journal
                             </div>
                         </secion>
                     </div>
-                </h4>
+                </h6>
             {% endif %}
 
     </div>
