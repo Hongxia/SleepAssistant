@@ -9,7 +9,7 @@ Login
 {% endblock %}
 
 {% block content %}
-	<div id="vertical-center" class="small-12 columns">
+	<div class="small-12 columns vertical-space">
         <form id="login_form" method="post" action="{% url 'account_login' %}" class="custom">
             {% csrf_token %}
             {% if redirect_field_value %}

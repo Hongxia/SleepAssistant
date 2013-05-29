@@ -10,7 +10,7 @@ Get Up
 
 {% load humanize %}
 {% block content %}
-	<div id="vertical-center" class="small-12 columns">
+	<div class="small-12 columns vertical-space">
 		<form id="getup_form_id" action="{% url 'getup' %}" method="post" style="display:none;">
 			{% csrf_token %}
 		</form>
