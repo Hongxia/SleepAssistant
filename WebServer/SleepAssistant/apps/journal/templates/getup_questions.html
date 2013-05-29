@@ -15,19 +15,25 @@ About Your Sleep
 		<form id="getup_questions_form_id" action="{% url 'getup_questions' %}" method="post">
 			{% csrf_token %}
 			<div class="small-12 columns">
-				{{ form.minutes_to_sleep.errors }}
 				<label for="id_minutes_to_sleep"><h5 class="subheader">Minutes in bed before fell asleep:</h5></label>
 				{{ form.minutes_to_sleep }}
+				{% if form.minutes_to_sleep.errors %}
+					<small class="error">{{ form.minutes_to_sleep.errors|first }}</small>
+				{% endif %}
 			</div>
 			<div class="small-12 columns">
-				{{ form.minutes_to_getup.errors }}
 				<label for="id_minutes_to_getup"><h5 class="subheader">Minutes in bed after woke up:</h5></label>
 				{{ form.minutes_to_getup }}
+				{% if form.minutes_to_getup.errors %}
+					<small class="error">{{ form.minutes_to_getup.errors|first }}</small>
+				{% endif %}
 			</div>
 			<div class="small-12 columns">
-				{{form.hours_awake_in_sleep.errors }}
 				<label for="id_hours_awake_in_sleep"><h5 class="subheader">Time Awake in Middle of Night:</h5></label>
 				{{ form.hours_awake_in_sleep }}
+				{% if form.hours_awake_in_sleep.errors %}
+					<small class="error">{{ form.hours_awake_in_sleep.errors|first }}</small>
+				{% endif %}
 			</div>
 			<div class="small-12 columns vertical-space">
 				<input type="submit" value="Update" class="large button expand" />

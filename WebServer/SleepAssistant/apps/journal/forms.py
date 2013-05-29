@@ -50,18 +50,6 @@ class GetupQuestionsForm(forms.Form):
 		self.fields['hours_awake_in_sleep'].widget.attrs = { 'placeholder':'in hours, x.xx'}
 
 class JournalEntryForm(ModelForm):
-	FEELING_CHOICES = (
-    	('1', 'Good'),
-    	('2', '2'),
-   	   	('3', '3'),
-   	  	('4', '4'),
-   	  	('5', '5'),
-   	   	('6', '6'),
-   	   	('7', '7'),
-   	   	('8', '8'),
-   	   	('9', '9'),
-   	   	('10', 'Bad'),
-   	)
 	DATE_CHOICES = (('0', 'Today'), ('-1', 'Yesterday'))
 
 	in_bed_date = forms.ChoiceField(choices=DATE_CHOICES)
@@ -71,14 +59,13 @@ class JournalEntryForm(ModelForm):
 	wake_up = forms.TimeField(required=False)
 	out_bed = forms.TimeField(required=False)
 
-   	overall_feeling = forms.ChoiceField(choices=FEELING_CHOICES)
    	optimal_time = forms.TimeField(required=False)
 
 	class Meta:
 		model = SleepRecord
 		fields = ('awake_hours', 'napping_hours', 'grogginess', 'zero_two', 'two_four','four_six', 'six_eight', 'eight_ten', 
 			'ten_twelve','twelve_fourteen','fourteen_sixteen', 'sixteen_eighteen',
-			'eighteen_twenty' ,'twenty_twenty_two', 'twenty_two_zero')
+			'eighteen_twenty' ,'twenty_twenty_two', 'twenty_two_zero', 'overall')
 		widgets = {
 			'in_bed': forms.TimeInput(format='%H:%M'),
 			'fall_asleep': forms.TimeInput(format='%H:%M'),
@@ -98,3 +85,4 @@ class JournalEntryForm(ModelForm):
 		self.fields['awake_hours'].widget.attrs={'placeholder': 'In hours'}
 		self.fields['napping_hours'].widget.attrs={'placeholder': 'In hours'}
 		self.fields['grogginess'].widget.attrs={'placeholder': 'In Minutes'}
+		self.fields['optimal_time'].widget.attrs={'placeholder': 'hh:mm'}

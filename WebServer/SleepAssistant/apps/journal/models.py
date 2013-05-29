@@ -36,20 +36,24 @@ class UserProfile(models.Model):
 	def is_sleep(self):
 		return self.state == 'SL'
 
+	def is_not_awake(self):
+		return not self.state == 'AW'
+
 	def nap(self):
 		self.state = 'NA'
-		self.onset = datetime.utcnow().replace(tzinfo=utc)
+		self.onset = datetime.now()
 		self.save()
 
 	def sleep(self):
 		self.state = 'SL'
-		self.onset = datetime.utcnow().replace(tzinfo=utc)
+		self.onset = datetime.now()
 		self.save()
 
 	# returns a timedelta object
 	def getup(self):
 		self.state = 'AW'
-		getup = datetime.utcnow().replace(tzinfo=utc)
+		getup = datetime.now()
+		print >> sys.stderr, "getup: %s" % getup
 		inbed = self.onset
 		time_slept = getup - inbed
 		self.onset = None
@@ -80,6 +84,15 @@ class SleepRecordManager(models.Manager):
 		except SleepRecord.DoesNotExist:
 			return None
 
+	def all_completed_records(self, user):
+		all_records = self.all_records(user)
+		all_completed_records = []
+		for record in all_records:
+			if record.is_completed():
+				all_completed_records.append(record)
+
+		return all_completed_records
+
 class SleepRecord(models.Model):
 	objects = SleepRecordManager()
 	# user
@@ -91,8 +104,8 @@ class SleepRecord(models.Model):
 	fall_asleep = models.DateTimeField(blank=True, null=True)
 	wake_up = models.DateTimeField(blank=True, null=True)
 	out_bed = models.DateTimeField(blank=True, null=True)
-	awake_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
-	napping_hours = models.DecimalField(default=0, max_digits=4, decimal_places=2)
+	awake_hours = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
+	napping_hours = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=2)
 	grogginess = models.IntegerField(blank=True, null=True)
 
 	# alertness
@@ -104,6 +117,18 @@ class SleepRecord(models.Model):
 		(5, 'Drowsy'),
 		(6, 'Asleep'),
 	)
+	FEELING = (
+    	(1, 'Good'),
+    	(2, '2'),
+   	   	(3, '3'),
+   	  	(4, '4'),
+   	  	(5, '5'),
+   	   	(6, '6'),
+   	   	(7, '7'),
+   	   	(8, '8'),
+   	   	(9, '9'),
+   	   	(10, 'Bad'),
+   	)
 	zero_two = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
 	two_four = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
 	four_six = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
@@ -117,7 +142,7 @@ class SleepRecord(models.Model):
 	twenty_twenty_two = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
 	twenty_two_zero = models.IntegerField(blank=True, null=True, choices=ALERTNESS)
 	optimal_time = models.DateTimeField(blank=True, null=True)
-	overall = models.IntegerField(blank=True, null=True)
+	overall = models.IntegerField(blank=True, null=True, choices=FEELING)
 
 	# sleep altering factors
 	inducing_factor = models.TextField(blank=True)
@@ -129,6 +154,9 @@ class SleepRecord(models.Model):
 
 	def __unicode__(self):
 		return 'Sleep Record of %s on %s' % (self.user.get_full_name(), self.get_weekday())
+
+	def is_completed(self):
+		return self.in_bed and self.fall_asleep and self.wake_up and self.out_bed and self.awake_hours and self.napping_hours and self.grogginess
 
 	def get_weekday(self):
 		weekday = self.date.weekday()

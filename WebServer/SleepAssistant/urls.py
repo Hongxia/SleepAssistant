@@ -6,6 +6,7 @@ import SleepAssistant.apps.journal.views
 
 urlpatterns = patterns('',
 	# journal app
+    url(r'^$', 'SleepAssistant.apps.journal.views.home', name='home'),
     url(r'^sleep/$', 'SleepAssistant.apps.journal.views.sleep', name='sleep'),
     url(r'^getup/$', 'SleepAssistant.apps.journal.views.getup', name='getup'),
     url(r'^getup_questions/$', 'SleepAssistant.apps.journal.views.getup_questions', name='getup_questions'),

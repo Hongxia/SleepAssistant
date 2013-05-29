@@ -5,7 +5,7 @@ Summary
 {% endblock %}
 
 {% block navheader %}
-Summary
+Sleep Summary
 {% endblock %}
 
 {% load humanize %}
@@ -16,15 +16,17 @@ Summary
                 <h4 class="subheader">
                     Sleep Assistant found <a href="#"><strong>{{ record_count|intcomma }}</strong></a> sleep {% if record_count == 1 %}record{% else %}records{% endif %} of you.
                 </h4>
-                <h4 class="subheader">
-                    According to our calculation, you have cumulated <a href="#"><strong>{{ sleep_debt|floatformat:2|intcomma }}</strong></a> hours of Sleep Debt.
-                </h4>
-                <h4 class="subheader">
-                    On average, you slept <a href="#"><strong>{{ average_sleep_hours|floatformat:2|intcomma }}</strong></a> hours per day.
-                </h4>
-                <h4 class="subheader">
-                   and you experienced <a href="#"><strong>{{ average_grog|floatformat:2|intcomma }}</strong></a> minutes of grogginess every morning.
-                </h4>
+                {% if record_count > 0%}
+                    <h4 class="subheader">
+                        According to our calculation, you have cumulated <a href="#"><strong>{{ sleep_debt|floatformat:2|intcomma }}</strong></a> hours of Sleep Debt.
+                    </h4>
+                    <h4 class="subheader">
+                        On average, you slept <a href="#"><strong>{{ average_sleep_hours|floatformat:2|intcomma }}</strong></a> hours per day.
+                    </h4>
+                    <h4 class="subheader">
+                       and you experienced <a href="#"><strong>{{ average_grog|floatformat:2|intcomma }}</strong></a> minutes of grogginess every morning.
+                    </h4>
+                {% endif %}
             </div>
         </fieldset>
     </div>

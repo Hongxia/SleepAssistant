@@ -12,7 +12,13 @@ Sleep Journal
 {% block content %}
     <!--<div id="vertical-center" class="small-12 columns">-->
     <div class="small-12 columns vertical-space">
-            <h3 class="subheader text-center">Journal: <a href="#"><strong>{{ date }}</strong></a></h3>
+            <h3 class="subheader text-center">
+                {% if record.is_completed != True %}
+                    <a href="{% url 'update_journal_entry' date.year date.month date.day %}">Uncompleted</a> 
+                {% endif %}
+                Journal: 
+                <a href="#"><strong>{{ date }}</strong></a>
+            </h3>
 
             <div class="small-12 columns text-center">
                 <ul class="button-group even-3 round">
@@ -40,7 +46,7 @@ Sleep Journal
                 <h4 class="subheader">
                     <div class="section-container auto" data-section>
                         <section>
-                            <p class="title" data-section-title><a href="#panel1">&emsp;&emsp;Sleep Data&emsp;&emsp;</a></p>
+                            <p class="title" data-section-title><a href="#">&emsp;&emsp;Sleep Data&emsp;&emsp;</a></p>
                             <div class="content" data-section-content>
 
                                 <div class="row">
@@ -169,7 +175,7 @@ Sleep Journal
 
                        
                         <section>
-                            <p class="title" data-section-title><a href="#panel2">&emsp;&emsp;Alertness Data&emsp;&emsp;</a></p>
+                            <p class="title" data-section-title><a href="#">&emsp;&emsp;Alertness Data&emsp;&emsp;</a></p>
                             <div class="content" data-section-content>
 
                                 <div class="row">
@@ -295,6 +301,31 @@ Sleep Journal
                                 </div>
                             </div>
                         </section>
+                        <section>
+                            <p class="title" data-section-title><a href="#">&emsp;&emsp;Overall Data&emsp;&emsp;</a></p>
+                            <div class="content" data-section-content>
+                                <div class="row">
+                                    <div class="small-6 columns">Overall feeling:</div>
+                                    <div class="small-6 columns">
+                                        {% if record.overall %}
+                                            {{ record.overall }}
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="small-6 columns">Time with optimal alertness:</div>
+                                    <div class="small-6 columns">
+                                        {% if record.optimal_time %}
+                                            {{ record.optimal_time.time }}
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </secion>
                     </div>
                 </h4>
             {% endif %}
