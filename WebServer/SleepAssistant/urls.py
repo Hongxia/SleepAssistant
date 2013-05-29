@@ -18,6 +18,8 @@ urlpatterns = patterns('',
 	url(r'^account/signup/$', SleepAssistant.apps.journal.views.SignupView.as_view(), name='account_signup'),
  	url(r'^account/', include('account.urls')),
 
+    url(r'^$', 'SleepAssistant.apps.journal.views.landingpage', name='landing'),
+
     # admin
     #url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     #url(r'^admin/', include(admin.site.urls)),

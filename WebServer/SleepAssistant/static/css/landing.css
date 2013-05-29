@@ -1,0 +1,10 @@
+.bgimg {
+    background-image: url("../images/background-wallpaper.png");
+    -webkit-background-size: cover;
+}
+
+.centerImg {
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+}

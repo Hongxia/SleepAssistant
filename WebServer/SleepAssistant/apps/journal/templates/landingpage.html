@@ -1,37 +1,21 @@
 {% extends "phone_base.html" %}
-
-{% block title %}
-Summary
-{% endblock %}
-
 {% block content %}
-    <div class="row">
-        <div style="padding-left:3px;"><h4>Summary</h4></div>
+{% load staticfiles %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/landing.css' %}" />
 
-        <fieldset>
-            <div class="small-12 columns text-center">
-                <h5 class="subheader">Number of Recorded Sleeps:</h5>
-                <h4>{{ record_count }}</h4>
-            </div>
-            
-            <div class="small-12 columns text-center">
-                <h5 class="subheader">Your Current Sleep Debt</h5>
-                <h4>{{ sleep_debt }}</h4>
-            </div>
+    <div class="bgimg">
+        <img class="centerImg" src="{% static 'images/homeText.png' %}"/>
+        <img class="centerImg" src="{% static 'images/hometext2.png' %}"/>
+    
+    <br />
+    <div class="text-center"><a href="#" data-reveal-id="firstModal" class="medium button">About&hellip;</a></div>
+    
+    <div class="text-center"><a href="{% url 'account_login' %}" class="medium button ">Login</a></div>
 
-            <div class="small-12 columns text-center">
-                <h5 class="subheader">Your Average Sleep Hours</h5>
-                <h4>{{ average_sleep_hours }}</h4>
-            </div>
+    <br />
 
-            <div class="small-12 columns text-center">
-                <h5 class="subheader">Your Average Morning Grogginess</h5>
-                <h4>{{ average_grog }}</h4>
-            </div>
-        </fieldset>
-
-         <div class="text-center"><a href="#" data-reveal-id="firstModal" class="medium button">About&hellip;</a></div>
-        <div id="firstModal" class="text-center reveal-modal">
+    <div id="firstModal" class="text-center reveal-modal">
           <br /><h2>Welcome to Sleep Assistant!</h2>
           <p>This is your personal assistant that will help you track you sleep thourgh the course of Sleep &amp; Dreams. You will be able to easily track your sleep data and have everything you need to learn about imporving your sleep hygene!</p>
           
@@ -60,6 +44,5 @@ Summary
         </div>
         </div>
     </div>
-
-    </div>
+    
 {% endblock %}

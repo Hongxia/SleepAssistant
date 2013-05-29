@@ -388,3 +388,6 @@ def update_alertness(request, year, month, day):
 		'date' : current_date,
 		'record' : record,
 	})
+
+def landingpage(request):
+	return render(request, "landingpage.html")
