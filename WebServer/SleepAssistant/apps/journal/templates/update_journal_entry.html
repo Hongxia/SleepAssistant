@@ -10,102 +10,214 @@ Update Journal Entry
 
 {% load humanize %}
 {% block content %}
-	<div class="small-12 columns text-center">
+	<div class="small-12 columns text-center vertical-space">
 		<h3 class="subheader text-center">Journal: <a href="#"><strong>{{ date }}</strong></a></h3>
-		<hr>
+
 		<form id='update_journal_entry_form' method='POST' action="{% url 'update_journal_entry' date.year date.month date.day %}" class="custom">
-			{% csrf_token %}
-
-			<div class="small-10 columns text-center">
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Went to bed at:</h4></div>
-					<div class="small-6 columns">
-						<div class="row collapse">
-							<div class="small-7 columns">
-								{{ form.in_bed }}
-							</div>
-							<div class="small-5 columns">
-								{{ form.in_bed_date }}
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Fell asleep at:</h4></div>
-					<div class="small-6 columns">
-						<div class="row collapse">
-							<div class="small-7 columns">
-								{{ form.fall_asleep }}
-							</div>
-							<div class="small-5 columns">
-								{{ form.fall_asleep_date }}
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Woke up at:</h4></div>
-					<div class="small-6 columns">
-						<div class="row collapse">
-							<div class="small-7 columns">
-								{{ form.wake_up }}
-							</div>
-							<div class="small-5 columns">
-								<select>
-									<option>Today</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Left bed at:</h4></div>
-					<div class="small-6 columns">
-						<div class="row collapse">
-							<div class="small-7 columns">
-								{{ form.out_bed }}
-							</div>
-							<div class="small-5 columns">
-								<select>
-									<option>Today</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<hr>
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Hours awake at night:</h4></div>
-					<div class="small-6 columns">{{ form.awake_hours }}</div>
-				</div>
-
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Morning Grogginess:</h4></div>
-					<div class="small-6 columns">{{ form.grogginess }}</div>
-				</div>
-
-				<hr>
-				
-				<div class="row">
-					<div class="small-6 columns text-right"><h4 class="subheader">Hours spent napping:</h4></div>
-					<div class="small-6 columns">{{ form.napping_hours }}</div>
-				</div>
-			</div>
-
-
-			<div class="small-12 columns vertical-space">							
+			<div class="small-12 columns">							
 				{% if record == None %}
 					<button type="submit" class="button expand">Create</button>
 				{% else %}
 					<button type="submit" class="button expand">Update</button>
 				{% endif %}
 			</div>
+			<hr>
+
+			{% csrf_token %}
+
+			<div class="section-container auto" data-section>
+
+
+				<section>
+	                <p class="title" data-section-title><a href="#panel1">&emsp;&emsp;Sleep Data&emsp;&emsp;</a></p>
+	                <div class="content" data-section-content>
+	                	<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Went to bed at:</h4></div>
+							<div class="small-6 columns">
+								<div class="row collapse">
+									<div class="small-7 columns">
+										{{ form.in_bed }}
+									</div>
+									<div class="small-5 columns">
+										{{ form.in_bed_date }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Fell asleep at:</h4></div>
+							<div class="small-6 columns">
+								<div class="row collapse">
+									<div class="small-7 columns">
+										{{ form.fall_asleep }}
+									</div>
+									<div class="small-5 columns">
+										{{ form.fall_asleep_date }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Woke up at:</h4></div>
+							<div class="small-6 columns">
+								<div class="row collapse">
+									<div class="small-7 columns">
+										{{ form.wake_up }}
+									</div>
+									<div class="small-5 columns">
+										<select>
+											<option>Today</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Left bed at:</h4></div>
+							<div class="small-6 columns">
+								<div class="row collapse">
+									<div class="small-7 columns">
+										{{ form.out_bed }}
+									</div>
+									<div class="small-5 columns">
+										<select>
+											<option>Today</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Hours awake at night:</h4></div>
+							<div class="small-6 columns">{{ form.awake_hours }}</div>
+						</div>
+
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Morning Grogginess:</h4></div>
+							<div class="small-6 columns">{{ form.grogginess }}</div>
+						</div>
+
+						<hr>
+						
+						<div class="row">
+							<div class="small-6 columns text-right"><h4 class="subheader">Hours spent napping:</h4></div>
+							<div class="small-6 columns">{{ form.napping_hours }}</div>
+						</div>
+	                </div>
+                </section>
+
+                 <section>
+                    <p class="title" data-section-title><a href="#panel2">&emsp;&emsp;Alertness Data&emsp;&emsp;</a></p>
+                    <div class="content" data-section-content>
+                    	
+	                    	<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">12 A.M. &mdash; 2 A.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.zero_two }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.two_four }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">2 A.M. &mdash; 4 A.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">4 A.M. &mdash; 6 A.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.four_six }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.six_eight }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">6 A.M. &mdash; 8 A.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">8 A.M. &mdash; 10 A.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.eight_ten }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>		
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.ten_twelve }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">10 A.M. &mdash; 12 P.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+
+							<hr>
+
+							<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">12 P.M. &mdash; 2 P.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.twelve_fourteen }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.fourteen_sixteen }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">2 P.M. &mdash; 4 P.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">4 P.M. &mdash; 6 P.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.sixteen_eighteen }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>		
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.eighteen_twenty }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">6 P.M. &mdash; 8 P.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns"><h4 class="subheader">8 P.M. &mdash; 10 P.M.</h4></div>
+								<div class="small-4 columns">
+									{{ form.twenty_twenty_two }}
+								</div>
+								<div class="small-2 columns"></div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="small-4 small-offset-2 columns">
+									{{ form.twenty_two_zero }}
+								</div>
+								<div class="small-4 columns"><h4 class="subheader">10 P.M. &mdash; 12 A.M.</h4></div>
+								<div class="small-2 columns"></div>
+							</div>
+
+					</div>
+				</section>
+            </div>
+
 		</form>
 	</div>
 {% endblock %}

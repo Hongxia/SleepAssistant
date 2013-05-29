@@ -4,12 +4,12 @@
 Login
 {% endblock %}
 
-{% block content %}
-	<div class="row">
-		<div class="small-12 columns">
-			<h4>Login</h4>
-		</div>
+{% block navheader %}
+Login
+{% endblock %}
 
+{% block content %}
+	<div id="vertical-center" class="small-12 columns">
         <form id="login_form" method="post" action="{% url 'account_login' %}" class="custom">
             {% csrf_token %}
             {% if redirect_field_value %}
@@ -32,11 +32,21 @@ Login
         			{{ form.remember }}
         		</div>
         		<div class="small-12 columns"></div>
-        		<div class="small-12 columns text-right">
-        			<button type="submit" class="button">Login</button>
-        			<a href="{% url 'account_signup' %}" class="secondary button">Signup</a></li>
+        		<div class="small-12 columns vertical-space">
+                    <ul class="button-group even-2">
+                        <li><a href="{% url 'account_signup' %}" class="secondary button">Signup</a></li></li>
+                        <li><button type="submit" class="button">Login</button></li>
+                    </ul>
         		</div>
            	</fieldset>
         </form>
 	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/layout.js' %}"></script>
 {% endblock %}

@@ -109,9 +109,10 @@ def getup_questions(request):
 def get_sleep_debt(records):
 	debt = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		debt += (8 - record.total_time_asleep())
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			debt += (8 - record.total_time_asleep())
 
 	if count == 0:
 		return '-'
@@ -121,9 +122,10 @@ def get_sleep_debt(records):
 def get_average_sleep_hours(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.total_time_asleep()
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.total_time_asleep()
 
 	if count > 0:
 		return decimal.Decimal(total)/count
@@ -133,9 +135,10 @@ def get_average_sleep_hours(records):
 def get_average_grogginess(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.grogginess
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.grogginess
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
@@ -160,14 +163,20 @@ def summary(request):
 	user = request.user
 	profile = UserProfile.objects.get(user=user)
 	all_records = SleepRecord.objects.all_records(user)
+	if len(all_records) == 0:
+		num_records = 0
+	else:
+		num_records = len(all_records) - 1
 
 	return render(request, 'summary.html', {
-		'record_count' : len(all_records) - 1,
+		'record_count' : num_records,
 		'sleep_debt' : get_sleep_debt(all_records),
 		'average_sleep_hours' : get_average_sleep_hours(all_records),
 		'average_grog' : get_average_grogginess(all_records),
 		#'average_overall' : get_average_overall_feeling(all_records), 				
 	})
+
+
 
 
 @login_required
@@ -229,8 +238,6 @@ def journal_entry_old(request, record_id):
 	else:
 		prev_id = prev_record.id
 
-
-
 	# next_id is None if current record is today's record
 	# next_id / prev_id is 0 if it does not exist yet
 	return render(request, 'journal_entry.html', {
@@ -238,6 +245,7 @@ def journal_entry_old(request, record_id):
 		'next_id' : next_id,
 		'prev_id' : prev_id,
 	})
+
 
 @login_required
 def update_journal_entry(request, year, month, day):
@@ -249,10 +257,10 @@ def update_journal_entry(request, year, month, day):
 		return HttpResponseNotFound('<h1>Date not valid.</h1>')
 	
 	if request.method == 'POST':
-		form = JournalEntryForm(request.POST)
+		form = JournalEntryForm(request.POST)		
+
 		if form.is_valid():
 			record = form.save(commit=False)
-			
 			in_bed_time = form.cleaned_data['in_bed']
 			fall_asleep_time = form.cleaned_data['fall_asleep']
 			wake_up_time = form.cleaned_data['wake_up']
@@ -292,8 +300,43 @@ def update_journal_entry(request, year, month, day):
 				'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
 			})
 
+	if request.method == 'POST':
+		record = SleepRecord.objects.daily_record(user, current_date)
 	# next_date is None if current record is today's record
 	return render(request, 'update_journal_entry.html', {
+		'form' : form,
+		'date' : current_date,
+		'record' : record,
+	})
+
+@login_required
+def update_alertness(request, year, month, day):
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	try:
+		current_date = date(int(year), int(month), int(day))
+	except ValueError:
+		return HttpResponseNotFound('<h1>Date not valid.</h1>')
+	
+	record = SleepRecord.objects.daily_record(user, current_date)
+	if request.method == 'POST':
+		form = AlertnessEntryForm(request.POST)
+		if form.is_valid():
+			#record = form.save(commit=False)
+			record.overall = form.cleaned_data['overall_feeling']
+			opt_time = form.cleaned_data['optimal_time']
+			if (opt_time != None):
+				record.optimal_time = datetime.combine(current_date, opt_time)
+			record.save()
+			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
+	else:
+		#form = AlertnessEntryForm()
+		form = AlertnessEntryForm(instance=record, initial={ 
+
+			'optimal_time':record.optimal_time,
+			})
+
+	return render(request, 'update_alertness_entry.html', {
 		'form' : form,
 		'date' : current_date,
 		'record' : record,

@@ -4,12 +4,12 @@
 Sign up
 {% endblock %}
 
-{% block content %}
-	<div class="row">
-		<div class="small-12 columns">
-			<h4>Sign up</h4>
-		</div>
+{% block navheader %}
+Signup
+{% endblock %}
 
+{% block content %}
+	<div class="small-12 columns">
         <form id="signup_form" method="post" action="{% url 'account_signup' %}" class="custom">
             {% csrf_token %}
 			{% if redirect_field_value %}
@@ -41,18 +41,21 @@ Sign up
             		<label for="id_last_name"><h5 class="subheader">Last Name:</h5></label>
 					{{ form.last_name }}
             	</div>
-            	<div class="small-12 columns">
-            		{{ form.last_name.birthday }}
-            		<label for="id_birthday"><h5 class="subheader">Birthday:</h5></label>
-                    {{ form.birthday }}
-            	</div>
 
             	<!--Not really sure what does code field do...-->
             	<div class="small-12 columns">{{ form.code }}</div>
-                <div class="small-12 columns text-right">
-                    <button type="submit" class="button">Signup</button>
+                <div class="small-12 columns vertical-space">
+                    <button type="submit" class="button expand">Signup</button>
                 </div>
             </fieldset>
         </form>
 	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/layout.js' %}"></script>
 {% endblock %}

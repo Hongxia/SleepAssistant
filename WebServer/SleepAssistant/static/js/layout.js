@@ -6,7 +6,7 @@ $(document).ready(function(){
 function vertical_center() {
 	var container = $("#vertical-center");
 	if (container) {
-		var margin_top = ($(window).height() - container.height()) / 2;
+		var margin_top = ($(window).height() - container.height()) / 2 - 100;
 		container.css("margin-top", margin_top);
 	}
 }
