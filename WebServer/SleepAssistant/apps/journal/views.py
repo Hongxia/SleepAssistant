@@ -29,7 +29,6 @@ class SignupView(account.views.SignupView):
 		profile = UserProfile(user=self.created_user)
 		profile.first_name = form.cleaned_data['first_name']
 		profile.last_name = form.cleaned_data['last_name']
-		profile.birthday = form.cleaned_data['birthday']
 		profile.save()
 
 	def generate_username(self, form):
@@ -265,21 +264,31 @@ def update_journal_entry(request, year, month, day):
 			fall_asleep_time = form.cleaned_data['fall_asleep']
 			wake_up_time = form.cleaned_data['wake_up']
 			out_bed_time = form.cleaned_data['out_bed']
+			opt_time = form.cleaned_data['optimal_time']
 
-			if form.cleaned_data['in_bed_date'] == -1:
-				yesterday = current_date - timedelta(days=1)
-				record.in_bed = datetime.combine(yesterday, in_bed_time)
-			else:
-				record.in_bed = datetime.combine(current_date, in_bed_time)
+			if in_bed_time:
+				if form.cleaned_data['in_bed_date'] == -1:
+					yesterday = current_date - timedelta(days=1)
+					record.in_bed = datetime.combine(yesterday, in_bed_time)
+				else:
+					record.in_bed = datetime.combine(current_date, in_bed_time)
 
-			if form.cleaned_data['fall_asleep_date'] == -1:
-				yesterday = current_date - timedelta(days=1)
-				record.fall_asleep = datetime.combine(yesterday, fall_asleep_time)
-			else:
-				record.fall_asleep = datetime.combine(current_date, fall_asleep_time)
+			if fall_asleep_time:
+				if form.cleaned_data['fall_asleep_date'] == -1:
+					yesterday = current_date - timedelta(days=1)
+					record.fall_asleep = datetime.combine(yesterday, fall_asleep_time)
+				else:
+					record.fall_asleep = datetime.combine(current_date, fall_asleep_time)
 
-			record.wake_up = datetime.combine(current_date, wake_up_time)
-			record.out_bed = datetime.combine(current_date, out_bed_time)
+			if wake_up_time:
+				record.wake_up = datetime.combine(current_date, wake_up_time)
+
+			if out_bed_time:
+				record.out_bed = datetime.combine(current_date, out_bed_time)
+
+			record.overall = form.cleaned_data['overall_feeling']
+			if opt_time:
+				record.optimal_time = datetime.combine(current_date, opt_time)
 
 			record.user = user
 			record.date = current_date
@@ -298,45 +307,13 @@ def update_journal_entry(request, year, month, day):
 				'out_bed_time' : record.out_bed.time(),
 				'in_bed_yesterday' : record.in_bed.date() != current_date,
 				'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
+				'optimal_time':record.optimal_time,
 			})
 
 	if request.method == 'POST':
 		record = SleepRecord.objects.daily_record(user, current_date)
 	# next_date is None if current record is today's record
 	return render(request, 'update_journal_entry.html', {
-		'form' : form,
-		'date' : current_date,
-		'record' : record,
-	})
-
-@login_required
-def update_alertness(request, year, month, day):
-	user = request.user
-	profile = UserProfile.objects.get(user=user)
-	try:
-		current_date = date(int(year), int(month), int(day))
-	except ValueError:
-		return HttpResponseNotFound('<h1>Date not valid.</h1>')
-	
-	record = SleepRecord.objects.daily_record(user, current_date)
-	if request.method == 'POST':
-		form = AlertnessEntryForm(request.POST)
-		if form.is_valid():
-			#record = form.save(commit=False)
-			record.overall = form.cleaned_data['overall_feeling']
-			opt_time = form.cleaned_data['optimal_time']
-			if (opt_time != None):
-				record.optimal_time = datetime.combine(current_date, opt_time)
-			record.save()
-			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
-	else:
-		#form = AlertnessEntryForm()
-		form = AlertnessEntryForm(instance=record, initial={ 
-
-			'optimal_time':record.optimal_time,
-			})
-
-	return render(request, 'update_alertness_entry.html', {
 		'form' : form,
 		'date' : current_date,
 		'record' : record,

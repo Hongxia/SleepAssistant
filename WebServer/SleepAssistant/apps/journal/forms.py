@@ -19,7 +19,6 @@ class SignupForm(account.forms.SignupForm):
 	last_name = forms.CharField(
 		max_length=UserProfile._meta.get_field('last_name').max_length,
 		required=not UserProfile._meta.get_field('last_name').blank)
-	birthday = forms.DateField(widget=SelectDateWidget(years=range(1960, 2010)))
 
 	def __init__(self, *args, **kwargs):
 		super(SignupForm, self).__init__(*args, **kwargs)

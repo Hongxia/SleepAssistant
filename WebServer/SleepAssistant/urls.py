@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     url(r'^summary/$', 'SleepAssistant.apps.journal.views.summary', name='summary'),
     url(r'^journal/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', 'SleepAssistant.apps.journal.views.journal_entry', name='journal_entry'),
     url(r'^journal/update/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', 'SleepAssistant.apps.journal.views.update_journal_entry', name='update_journal_entry'),
-    url(r'^journal/alertness/update/(?P<year>\d+)/(?P<month>\d+)/(?P<day>\d+)/$', 'SleepAssistant.apps.journal.views.update_alertness', name='alertness_entry'),
 
     # django-user-accounts
 	url(r'^account/login/$', SleepAssistant.apps.journal.views.LoginView.as_view(), name='account_login'),
