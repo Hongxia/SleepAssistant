@@ -316,11 +316,11 @@ def update_alertness(request, year, month, day):
 	except ValueError:
 		return HttpResponseNotFound('<h1>Date not valid.</h1>')
 	
+	record = SleepRecord.objects.daily_record(user, current_date)
 	if request.method == 'POST':
 		form = AlertnessEntryForm(request.POST)
 		if form.is_valid():
-			current_date = date(int(year), int(month), int(day))
-			record = SleepRecord.objects.daily_record(user, current_date)
+			#record = form.save(commit=False)
 			record.zero_two = form.cleaned_data['zero_two']
 			record.two_four = form.cleaned_data['two_four']
 			record.four_six = form.cleaned_data['four_six']
@@ -339,7 +339,6 @@ def update_alertness(request, year, month, day):
 			record.save()
 			return HttpResponseRedirect(reverse('journal_entry', args=(year,month,day)))
 	else:
-		record = SleepRecord.objects.daily_record(user, current_date)
 		form = AlertnessEntryForm()
 		# form = AlertnessEntryForm(instance=record, initial={ 
 
@@ -383,6 +382,9 @@ def update_alertness(request, year, month, day):
 		# })
 
 	# next_date is None if current record is today's record
+
+	if request.method == 'POST':
+		print >> sys.stderr, "this is an invalid form"
 	return render(request, 'update_alertness_entry.html', {
 		'form' : form,
 		'date' : current_date,

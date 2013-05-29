@@ -65,14 +65,14 @@ class AlertnessEntryForm(ModelForm):
    	)
 
    	overall_feeling = forms.ChoiceField(choices=feels)
+   	optimal_time = forms.TimeField(required=False)
 
 	class Meta:
 		model = SleepRecord
 		fields = (
 			'zero_two', 'two_four','four_six', 'six_eight', 'eight_ten', 
 			'ten_twelve','twelve_fourteen','fourteen_sixteen', 'sixteen_eighteen',
-			'eighteen_twenty' ,'twenty_twenty_two', 'twenty_two_zero', 
-			'optimal_time'
+			'eighteen_twenty' ,'twenty_twenty_two', 'twenty_two_zero'
 		)
 		widgets = {
 			'optimal_time': forms.TimeInput(format='%H:%M'),
