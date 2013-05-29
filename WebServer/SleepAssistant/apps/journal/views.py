@@ -107,9 +107,10 @@ def getup_questions(request):
 def get_sleep_debt(records):
 	debt = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		debt += (8 - record.total_time_asleep())
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			debt += (8 - record.total_time_asleep())
 
 	if count == 0:
 		return '-'
@@ -119,9 +120,10 @@ def get_sleep_debt(records):
 def get_average_sleep_hours(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.total_time_asleep()
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.total_time_asleep()
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
@@ -131,9 +133,10 @@ def get_average_sleep_hours(records):
 def get_average_grogginess(records):
 	total = 0
 	count = 0
-	for record in records[0:len(records)-1]:
-		count += 1
-		total += record.grogginess
+	if len(records) > 0:
+		for record in records[0:len(records)-1]:
+			count += 1
+			total += record.grogginess
 
 	if count > 0:
 		return decimal.Decimal(total)/count 
