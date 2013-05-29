@@ -161,9 +161,13 @@ def summary(request):
 	user = request.user
 	profile = UserProfile.objects.get(user=user)
 	all_records = SleepRecord.objects.all_records(user)
+	if len(all_records) == 0:
+		num_records = 0
+	else:
+		num_records = len(all_records) - 1
 
 	return render(request, 'summary.html', {
-		'record_count' : len(all_records) - 1,
+		'record_count' : num_records,
 		'sleep_debt' : get_sleep_debt(all_records),
 		'average_sleep_hours' : get_average_sleep_hours(all_records),
 		'average_grog' : get_average_grogginess(all_records),
