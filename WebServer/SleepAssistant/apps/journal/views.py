@@ -236,8 +236,6 @@ def journal_entry_old(request, record_id):
 	else:
 		prev_id = prev_record.id
 
-
-
 	# next_id is None if current record is today's record
 	# next_id / prev_id is 0 if it does not exist yet
 	return render(request, 'journal_entry.html', {
@@ -258,10 +256,10 @@ def update_journal_entry(request, year, month, day):
 		return HttpResponseNotFound('<h1>Date not valid.</h1>')
 	
 	if request.method == 'POST':
-		form = JournalEntryForm(request.POST)
+		form = JournalEntryForm(request.POST)		
+
 		if form.is_valid():
 			record = form.save(commit=False)
-			
 			in_bed_time = form.cleaned_data['in_bed']
 			fall_asleep_time = form.cleaned_data['fall_asleep']
 			wake_up_time = form.cleaned_data['wake_up']
@@ -300,6 +298,8 @@ def update_journal_entry(request, year, month, day):
 				'fall_asleep_yesterday' : record.fall_asleep.date() != current_date,
 			})
 
+	if request.method == 'POST':
+		record = SleepRecord.objects.daily_record(user, current_date)
 	# next_date is None if current record is today's record
 	return render(request, 'update_journal_entry.html', {
 		'form' : form,

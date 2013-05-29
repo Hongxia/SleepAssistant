@@ -79,8 +79,8 @@ class AlertnessEntryForm(ModelForm):
 		}
 
 class JournalEntryForm(ModelForm):
-	in_bed_yesterday = forms.BooleanField()
-	fall_asleep_yesterday = forms.BooleanField()
+	in_bed_yesterday = forms.BooleanField(required=False)
+	fall_asleep_yesterday = forms.BooleanField(required=False)
 	in_bed = forms.TimeField(required=False)
 	fall_asleep = forms.TimeField(required=False)
 	wake_up = forms.TimeField(required=False)
