@@ -4,22 +4,37 @@
 Sleep
 {% endblock %}
 
+{% block navheader %}
+Sleep
+{% endblock %}
+
 {% block content %}
-	<div class="row">
+	<div id="vertical-center" class="small-12 columns">
 		<form id="sleep_form_id" action="{% url 'sleep' %}" method="post" style="display:none;">
 			{% csrf_token %}
 			{{ form.is_sleep }}
 		</form>
-		<div class="small-12 columns">
-			<button onclick="sleepClick(true)" class="large button expand">Sleep</button>
-		</div>
-		<div class="small-12 columns">
-			<button onclick="sleepClick(false)" class="large secondary button expand">Nap</button>
+		<h3>Sleep Assistant helps track your rest.</h3>
+		<h4 class="subheader">Tap "Sleep" or "Nap" to before taking a rest.</h4>
+		<h4 class="subheader">Return here and tap "Get Up" after you get out of the bed.</h4>
+		<h4 class="subheader">Sleep Tight!</h4>
+		<div class="vertical-space"></div>
+		<div class="row collapse">
+			<div class="small-6 columns">
+				<button onclick="sleepClick(true)" class="large button expand">Sleep</button>
+			</div>
+			<div class="small-6 columns">
+				<button onclick="sleepClick(false)" class="large secondary button expand">Nap</button>
+			</div>
 		</div>
 	</div>
 {% endblock %}
 
 {% load staticfiles %}
+{% block css %}
+	<link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
 {% block javascript %}
-	<script src="{% static 'journal.js' %}"></script>
+	<script src="{% static 'js/layout.js' %}"></script>
+	<script src="{% static 'js/sleep.js' %}"></script>
 {% endblock %}

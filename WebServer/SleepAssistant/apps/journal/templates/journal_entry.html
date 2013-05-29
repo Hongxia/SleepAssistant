@@ -1,13 +1,15 @@
 {% extends "phone_base.html" %}
 
 {% block title %}
-Journal Entry
+Sleep Journal
+{% endblock %}
+
+{% block navheader %}
+Sleep Journal
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-         <div style="padding-left:3px;"><h4>Journal Entry</h4></div>
-
+    <div id="vertical-center" class="small-12 columns">
         <fieldset>
             <!-- Controls -->
             <div class="small-12 columns text-center">
@@ -87,4 +89,12 @@ Journal Entry
             {% endif %}
         </fieldset>
     </div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
+{% block javascript %}
+    <script src="{% static 'js/layout.js' %}"></script>
 {% endblock %}

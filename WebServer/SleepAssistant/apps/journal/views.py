@@ -62,11 +62,11 @@ def sleep(request):
 	})
 
 @login_required
-def getup(request):
+def getup(request):		
+	user = request.user
+	profile = UserProfile.objects.get(user=user)
+	
 	if request.method == 'POST':
-		user = request.user
-		profile = UserProfile.objects.get(user=user)
-		
 		# should always be valid
 		if profile.is_sleep():
 			inbed, getup, time = profile.getup()
@@ -79,7 +79,9 @@ def getup(request):
 			record.add_nap_time(time)
 			return HttpResponseRedirect(reverse('summary'))
 
-	return render(request, 'getup.html', {})
+	return render(request, 'getup.html', {
+		"is_sleep" : profile.is_sleep(),
+	})
 
 @login_required
 def getup_questions(request):
@@ -124,7 +126,7 @@ def get_average_sleep_hours(records):
 		total += record.total_time_asleep()
 
 	if count > 0:
-		return decimal.Decimal(total)/count 
+		return decimal.Decimal(total)/count
 	else: 
 		return '-'
 

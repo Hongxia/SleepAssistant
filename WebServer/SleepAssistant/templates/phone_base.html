@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="{% static 'foundation/css/normalize.css' %}" />
 	<!-- If you are using CSS version, add this -->
 	<link rel="stylesheet" href="{% static 'foundation/css/foundation.min.css' %}" />
+	{% block css %}{% endblock %}
 	<script src="{% static 'foundation/js/custom.modernizr.js' %}"></script>
 </head>
 
@@ -23,7 +24,7 @@
 		<nav class="top-bar"> 
 			<ul class="title-area">
 				<li class="name">
-					<h1><a href="#">Sleep Assistant</a></h1>
+					<h1><a href="#">{% block navheader %}Sleep Assistant{% endblock %}</a></h1>
 				</li>
 				<li class="toggle-topbar menu-icon">
 					<a href="#"><span>Menu</span></a>

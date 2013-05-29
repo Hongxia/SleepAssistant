@@ -4,8 +4,14 @@
 Questions
 {% endblock %}
 
+{% block navheader %}
+About Your Sleep
+{% endblock %}
+
 {% block content %}
-	<div class="row">
+	<div id="vertical-center" class="small-8 small-offset-2 columns">
+		<h4 class="subheader">Sleep Assistant needs to know a few details to complete your sleep journal.</h4>
+		<div class="vertical-space"></div>
 		<form id="getup_questions_form_id" action="{% url 'getup_questions' %}" method="post">
 			{% csrf_token %}
 			<div class="small-12 columns">
@@ -23,9 +29,17 @@ Questions
 				<label for="id_hours_awake_in_sleep"><h5 class="subheader">Time Awake in Middle of Night:</h5></label>
 				{{ form.hours_awake_in_sleep }}
 			</div>
-			<div class="small-12 columns text-center">
-				<input type="submit" value="Update" class="button" />
+			<div class="small-12 columns vertical-space">
+				<input type="submit" value="Update" class="large button expand" />
 			</div>
 		</form>
 	</div>
+{% endblock %}
+
+{% load staticfiles %}
+{% block css %}
+	<link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+{% endblock %}
+{% block javascript %}
+	<script src="{% static 'js/layout.js' %}"></script>
 {% endblock %}
