@@ -17,37 +17,6 @@ Login
             {% endif %}
         	
         	<fieldset>
-
-                <div id="firstModal" class="text-center reveal-modal">
-                  <br /><h2>Welcome to Sleep Assistant!</h2>
-                  <p>This is your personal assistant that will help you track you sleep thourgh the course of Sleep &amp; Dreams. You will be able to easily track your sleep data and have everything you need to learn about imporving your sleep hygene!</p>
-                  
-                  <a class="close-reveal-modal">&#215;</a>
-                  <div><a data-reveal-id="secondModal" class="button small">Next</a></div>
-                </div>
-                <div id="secondModal" class="text-center reveal-modal">
-                  <h2 class="text-center">Record</h2>
-                  <br /><h4>Lets you actively record your sleep data through your daily life</h4>
-                  <a class="close-reveal-modal">&#215;</a>
-                  <div><a data-reveal-id="thirdModal" class="button small">Next</a></div>
-                </div>
-                <div id="thirdModal" class="text-center reveal-modal">
-                  <h2 class="text-center">Journal</h2>
-                  <br /><h4>Check out your sleep data for the day and update any missing fields</h4>
-                  <a class="close-reveal-modal">&#215;</a>
-                  <div><a data-reveal-id="fourthModal" class="button small">Next</a></div>
-                </div>
-                <div id="fourthModal" class="text-center reveal-modal">
-                  <h2 class="text-center">Summary</h2>
-                  <br /><h4>Shows you a summary of your key sleep data for quick reference!</h4>
-                  <a class="close-reveal-modal">&#215;</a>
-                  <br /><br />
-                  <h4> You're now ready to start tracking your sleep with your brand new <em>Sleep Assistant!</em></h4>
-                  <div class="text-center"><a href="{% url 'account_login' %}" class="medium button ">Login</a></div>
-                </div>
-                </div>
-            </div>
-
             	<div class="small-12 columns">
             		<label for="id_email"><h5 class="subheader">E-mail:</h5></label>
 					{{ form.email }}
@@ -64,8 +33,7 @@ Login
         		</div>
         		<div class="small-12 columns"></div>
         		<div class="small-12 columns text-right">
-                    <div style="display:inline-block;" class="left"><a href="#" data-reveal-id="firstModal" class="secondary button">About&hellip;</a></div>
-        			<button type="submit" class="button">Login</button>
+                    <button type="submit" class="button">Login</button>
         			<a href="{% url 'account_signup' %}" class="secondary button">Signup</a>
         		</div>
            	</fieldset>
