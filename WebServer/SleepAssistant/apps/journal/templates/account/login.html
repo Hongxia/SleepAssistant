@@ -30,6 +30,9 @@ Login
                     {% if form.password.errors %}
                         <small class="error">{{ form.password.errors|first }}</small>
                     {% endif %}
+                    {% if form.non_field_errors %}
+                        <small class="error">{{ form.non_field_errors|first }}</small>
+                    {% endif %}
             	</div>
     			<div class="small-4 columns">
         			<label for='id_remember'><h6 class="subheader">Remember Me:</h6></label>

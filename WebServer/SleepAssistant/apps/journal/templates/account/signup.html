@@ -17,7 +17,6 @@ Signup
             {% endif %}
             <fieldset>
             	<div class="small-12 columns">
-            		{{ form.email.errors }}
             		<label for="id_email"><h5 class="subheader">E-mail:</h5></label>
 					{{ form.email }}
                     {% if form.email.errors %}
@@ -25,23 +24,26 @@ Signup
                     {% endif %}
             	</div>
             	<div class="small-12 columns">
-            		{{ form.password.errors }}
             		<label for="id_password"><h5 class="subheader">Password:</h5></label>
 					{{ form.password }}
                     {% if form.password.errors %}
                         <small class="error">{{ form.password.errors|first }}</small>
                     {% endif %}
+                    {% if form.non_field_errors %}
+                        <small class="error">{{ form.non_field_errors|first }}</small>
+                    {% endif %}
             	</div>
             	<div class="small-12 columns">
-            		{{ form.password_confirm.errors }}
             		<label for="id_password_confirm"><h5 class="subheader">Confirm Password:</h5></label>
 					{{ form.password_confirm }}
                     {% if form.password_confirm.errors %}
                         <small class="error">{{ form.password_confirm.errors|first }}</small>
                     {% endif %}
+                    {% if form.non_field_errors %}
+                        <small class="error">{{ form.non_field_errors|first }}</small>
+                    {% endif %}
             	</div>
         		<div class="small-12 columns">
-            		{{ form.first_name.errors }}
             		<label for="id_first_name"><h5 class="subheader">First Name:</h5></label>
 					{{ form.first_name }}
                     {% if form.first_name.errors %}
@@ -49,7 +51,6 @@ Signup
                     {% endif %}
             	</div>
         		<div class="small-12 columns">
-            		{{ form.last_name.errors }}
             		<label for="id_last_name"><h5 class="subheader">Last Name:</h5></label>
 					{{ form.last_name }}
                     {% if form.last_name.errors %}
